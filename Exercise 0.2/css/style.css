@@ -1,0 +1,94 @@
+/* Color Palette & Variables */
+:root {
+    --primary-color: #2e7d32; /* Eco green */
+    --hover-color: #4caf50;
+    --bg-light: #f4f7f6;
+    --text-dark: #333;
+    --white: #ffffff;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+}
+
+/* Navbar styles */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: var(--white);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.power-logo {
+    fill: var(--primary-color);
+    transition: fill 0.3s ease;
+}
+
+.power-logo:hover {
+    fill: var(--hover-color);
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+    margin: 0;
+}
+
+.nav-item {
+    text-decoration: none;
+    color: var(--text-dark);
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+/* Mouse over feedback */
+.nav-item:hover {
+    background-color: var(--primary-color);
+    color: var(--white);
+}
+
+/* Active page feedback style */
+.nav-item.active-page {
+    border-bottom: 3px solid var(--primary-color);
+    border-radius: 0;
+    color: var(--primary-color);
+}
+
+/* Layout */
+.content-wrapper {
+    padding: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.info-cards {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.card {
+    background: var(--white);
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    flex: 1;
+}
+
+footer {
+    text-align: center;
+    padding: 1.5rem;
+    background-color: var(--white);
+    margin-top: 3rem;
+    font-size: 0.9rem;
+    border-top: 1px solid #ddd;
+}
