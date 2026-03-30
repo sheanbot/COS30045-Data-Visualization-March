@@ -3,48 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home | Appliance Energy Australia</title>
+    <title>Appliance Energy Australia</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-    <header>
-        <nav class="navbar">
-            <div class="logo-container">
-                <a href="index.html" class="logo-link">
-                    <img src="image/PowerIcon.png" alt="Power Icon" width="40" height="40">
-                </a>
-            </div>
-            <ul class="nav-links">
-                <li><a href="index.html" class="nav-item">Home</a></li>
-                <li><a href="televisions.html" class="nav-item">Televisions</a></li>
-                <li><a href="about.html" class="nav-item">About Us</a></li>
-            </ul>
-        </nav>
-    </header>
+<header>
+    <nav class="navbar">
+        <div class="logo-container">
+            <a href="#" onclick="showPage('home')">
+                <img src="image/PowerIcon.png" alt="Power Icon" width="40" height="40">
+            </a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#" class="nav-item" onclick="showPage('home')">Home</a></li>
+            <li><a href="#" class="nav-item" onclick="showPage('televisions')">Televisions</a></li>
+            <li><a href="#" class="nav-item" onclick="showPage('about')">About Us</a></li>
+        </ul>
+    </nav>
+</header>
 
-    <main class="content-wrapper">
+<main class="content-wrapper">
+
+    <!-- ===== HOME PAGE ===== -->
+    <section id="home" class="page active">
         <section class="hero">
             <h1>Australian Appliance Energy Consumption</h1>
-            <p>Understanding how household appliances contribute to your energy bill and reducing our carbon footprint.</p>
+            <p>
+                Understanding how household appliances contribute to your energy bill
+                and reducing Australia’s carbon footprint.
+            </p>
         </section>
 
         <section class="info-cards">
             <div class="card">
                 <h2>The Star Rating System</h2>
-                <p>Australia's Energy Rating label helps you compare the energy efficiency and running costs of appliances before you buy.</p>
+                <p>
+                    Australia’s Energy Rating Label helps consumers compare appliance
+                    efficiency and running costs.
+                </p>
             </div>
+
             <div class="card">
-                <h2>Why it Matters</h2>
-                <p>Household electricity use accounts for a significant portion of Australian emissions. Efficient appliances save money and the environment.</p>
+                <h2>Why It Matters</h2>
+                <p>
+                    Energy-efficient appliances reduce electricity costs and help
+                    protect the environment.
+                </p>
             </div>
         </section>
-    </main>
+    </section>
 
-    <footer>
-        <p>&copy; 2026 Lee Zhao Shean</p>
-    </footer>
+    <!-- ===== TELEVISIONS PAGE ===== -->
+<section id="televisions" class="page">
+    <h1>Television Energy Efficiency (2026)</h1>
 
-    <script src="js/navigation.js"></script>
+    <table id="tv-table">
+        <thead>
+            <tr>
+                <th>Model</th>
+                <th>Technology</th>
+                <th>Star Rating</th>
+                <th>Annual Energy (kWh)</th>
+                <th>Cost ($/Year)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- CSV data will be inserted here -->
+        </tbody>
+    </table>
+</section>
+
+    <!-- ===== ABOUT PAGE ===== -->
+    <section id="about" class="page">
+        <h1>About This Project</h1>
+        <p>
+            This website was developed as part of
+            <strong>COS30045 Data Visualisation</strong> at Swinburne University
+            of Technology.
+        </p>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 Lee Zhao Shean</p>
+</footer>
+
+<script src="js/navigation.js"></script>
+<script src="js/loadCSV.js"></script>
 </body>
 </html>

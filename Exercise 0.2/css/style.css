@@ -111,3 +111,13 @@ th {
     background-color: var(--primary-color);
     color: white;
 }
+
+/* Hide all pages by default */
+.page {
+    display: none;
+}
+
+/* Show active page */
+.page.active {
+    display: block;
+}
