@@ -72,7 +72,7 @@ body {
 
 /* Layout */
 .content-wrapper {
-    /* Make main content take remaining space so footer stays at bottom */
+    
     flex: 1 0 auto;
     padding: 2rem;
     max-width: 1000px;
@@ -97,7 +97,6 @@ footer {
     text-align: center;
     padding: 1.5rem;
     background-color: var(--white);
-    /* remove large top margin so footer sits flush at bottom when page is short */
     margin-top: 0;
     font-size: 0.9rem;
     border-top: 1px solid #ddd;
