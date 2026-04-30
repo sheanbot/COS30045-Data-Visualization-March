@@ -19,6 +19,7 @@
             <li><a href="#" class="nav-item" onclick="showPage('home')">Home</a></li>
             <li><a href="#" class="nav-item" onclick="showPage('televisions')">Televisions</a></li>
             <li><a href="#" class="nav-item" onclick="showPage('about')">About Us</a></li>
+            <li><a href="#" class="nav-item" onclick="showPage('storyboard')">Storyboard</a></li>
         </ul>
     </nav>
 </header>
@@ -84,6 +85,37 @@
         </p>
     </section>
 
+    <!-- ===== STORYBOARD PAGE ===== -->
+    <section id="storyboard" class="page">
+        <h1>Storyboard</h1>
+
+        <div class="storyboard-container">
+            <div class="storyboard-options" role="list">
+                <button class="storyboard-card selected" data-index="0" onclick="selectStoryboard(0)" aria-pressed="true">
+                    <img src="image/Storyboard1.png" alt="Storyboard One thumbnail" class="thumb-img" />
+                    <div class="card-title">Storyboard One</div>
+                </button>
+
+                <button class="storyboard-card" data-index="1" onclick="selectStoryboard(1)" aria-pressed="false">
+                    <img src="image/Storyboard2.png" alt="Storyboard Two thumbnail" class="thumb-img" />
+                    <div class="card-title">Storyboard Two</div>
+                </button>
+
+                <button class="storyboard-card" data-index="2" onclick="selectStoryboard(2)" aria-pressed="false">
+                    <img src="image/Storyboard3.png" alt="Storyboard Three thumbnail" class="thumb-img" />
+                    <div class="card-title">Storyboard Three</div>
+                </button>
+            </div>
+
+            <div class="storyboard-preview" id="storyboard-preview">
+                <h2 id="storyboard-title">Storyboard One</h2>
+                <div class="preview-image-wrapper" id="preview-image-wrapper">
+                    <img id="preview-image" src="image/Storyboard1.png" alt="Storyboard One large preview" />
+                </div>
+            </div>
+        </div>
+    </section>
+
 </main>
 
 <footer>
@@ -91,6 +123,7 @@
 </footer>
 
 <script src="js/navigation.js"></script>
+<script src="js/storyboard.js"></script>
 <script src="js/loadCSV.js"></script>
 </body>
 </html>

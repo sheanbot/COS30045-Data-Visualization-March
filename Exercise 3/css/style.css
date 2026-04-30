@@ -32,6 +32,11 @@ body {
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
+.nav-links .nav-item {
+    display: inline-block;
+    padding: 0.5rem 0.75rem;
+}
+
 .power-logo {
     fill: var(--primary-color);
     transition: fill 0.3s ease;
@@ -75,7 +80,8 @@ body {
     
     flex: 1 0 auto;
     padding: 2rem;
-    max-width: 1000px;
+    /* increase max width so preview can be larger */
+    max-width: 1200px;
     margin: 0 auto;
 }
 
@@ -129,4 +135,135 @@ th {
 /* Show active page */
 .page.active {
     display: block;
+}
+
+/* Storyboard page styles */
+.storyboard-container {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+    margin-top: 1rem;
+    /* keep the container visually balanced on wide screens */
+    align-content: start;
+}
+
+.storyboard-options {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    /* make the thumbnail panel narrower so preview gets more room */
+    flex: 0 0 160px;
+    align-items: center;
+}
+
+.storyboard-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    /* smaller thumbnail cards */
+    width: 140px;
+    padding: 0.5rem;
+    border: 2px solid transparent;
+    background: var(--white);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.storyboard-card:hover {
+    transform: translateY(-3px);
+}
+
+.storyboard-card.selected {
+    border-color: var(--primary-color);
+    box-shadow: 0 6px 18px rgba(46,125,50,0.12);
+}
+
+.thumb-svg {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+.thumb-img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.storyboard-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    width: 200px;
+    padding: 0.5rem;
+    border: 2px solid transparent;
+    background: var(--white);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card-title {
+    font-weight: 700;
+}
+
+.storyboard-preview {
+    flex: 1 1 auto;
+    background: var(--white);
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.preview-image-wrapper {
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.preview-image-wrapper img {
+    width: 100%;
+    height: auto;
+    display: block;
+    /* make it much larger so text in storyboards is readable */
+    max-height: 85vh;
+    object-fit: contain;
+    border-radius: 4px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+}
+
+.storyboard-preview h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+/* small visual polish */
+.storyboard-card .card-title {
+    font-size: 0.95rem;
+    text-align: center;
+}
+
+@media (max-width: 900px) {
+    .storyboard-container {
+        flex-direction: column;
+    }
+
+    .storyboard-options {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .storyboard-card {
+        width: 30%;
+    }
 }

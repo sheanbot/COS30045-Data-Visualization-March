@@ -1,104 +1,105 @@
 # Exercise 3 – Data Story: TV Energy Consumption
 
-## Overview
+This README documents the Storyboard deliverable for Exercise 3. The storyboard presents three related narratives about television energy use and buyer decision-making. Each storyboard is designed to highlight a specific issue, show data that illustrates the problem, propose practical ideas that help consumers, and give concrete recommendations.
 
-In this exercise, you will develop a **data story** based on the **TV Energy Consumption dataset**. Using the website created in **Exercise 0.2**, you will extend your work to present a meaningful narrative supported by data visualisations.
-
-Your goal is to communicate insights from the dataset in a clear and engaging way through your **website and written explanation**.
-
-You must use the **Exercise 3 folder in your existing forked repository** and reuse the files created in **Exercise 0.2**.
-
----
-
-## Data Story
-
-### Audience
-
-The target audience for this visualisation includes:
-
-- Consumers interested in **energy-efficient televisions**
-- Policy makers and regulators interested in **energy consumption trends**
-- Researchers studying **energy efficiency in consumer electronics**
-
-These audiences are interested in understanding how **television energy consumption varies across models, sizes, and technologies**, and how these factors influence overall energy usage.
-
-### Story Overview
-
-This visualisation explores patterns in **TV energy consumption** across different television models and specifications.
-
-The goal is to help viewers understand:
-
-- How energy consumption varies between television models
-- The relationship between **screen size and power consumption**
-- How **energy efficiency ratings** impact energy usage
-- Trends that may help consumers choose more **energy-efficient televisions**
-
-The website presents these insights through visualisations and explanatory text that guide the viewer through the data.
+Contents
+ - Storyboard summaries (three storyboards)
+ - How the Storyboard page works (UI/interaction)
+ - Assets and file locations
+ - How to run and test locally
+ - Accessibility, design notes and next steps
 
 ---
 
-## About the Data
+## Storyboard Summaries
 
-### Data Source
+Each storyboard follows the same structure: Issue → Demonstration (chart) → Idea to overcome → Recommendation → Before/After → Goals. The versions below summarise the panels and the intended message.
 
-The dataset used in this project contains information about **television models and their energy consumption characteristics**, including power usage, screen size, technology type, and efficiency ratings.
+Storyboard One — "Size ≠ Power"
+- Issue: Consumers often assume larger screen size means higher power consumption, and opt for smaller TVs to save energy.
+- Demonstrate: Scatter plot (size vs annual energy) shows that while power does tend to increase with size, there are many large models with reasonable energy use — size alone isn't a reliable indicator.
+- Idea: Encourage buyers to check the actual power usage or energy star rating rather than judging by screen size.
+- Recommendation: Don’t judge a TV by screen size alone. Check the wattage and energy rating before purchasing. Consumers can find large screens with efficient designs.
+- Before / After: Before — buyer avoids large TVs fearing high bills. After — buyer finds a large, energy-efficient model and enjoys a bigger screen without undue cost.
+- Goal: Help consumers make purchasing choices based on energy use (wattage / rating) rather than size.
 
-The dataset was provided as part of the course materials.
+Storyboard Two — "OLED: Great Picture, Smart Settings"
+- Issue: OLED panels deliver excellent picture quality, but many OLED models consume more power because pixels emit their own light.
+- Demonstrate: A bar chart comparing typical everyday power use across LED, LCD (LED-backlit), and OLED shows OLED often uses more power on average.
+- Idea: Show power-saving options like Eco Mode, automatic brightness, and picture-mode settings that can reduce OLED power use significantly.
+- Recommendation: If picture quality is the priority, choose an OLED but enable Eco Mode and adaptive brightness; otherwise, high-rated LED/LCD TVs offer a strong balance of quality and efficiency.
+- Before / After: Before — user uses maximum brightness and pays more in electricity. After — user switches on Eco Mode and keeps excellent picture quality while lowering power draw.
+- Goal: Enable movie lovers to enjoy high picture quality without large electricity bills by using smart settings.
 
-### Data Processing
-
-Before creating visualisations, the dataset was processed to ensure it was suitable for analysis. This included:
-
-- Cleaning missing or inconsistent values
-- Selecting relevant attributes for visualisation
-- Organising the data into formats suitable for web visualisation
-
-### Privacy
-
-The dataset does not contain any **personal or sensitive information**. It focuses solely on product specifications and energy consumption data related to television devices.
-
-### Accuracy and Limitations
-
-While the dataset provides useful information about TV energy consumption, there are some limitations:
-
-- The dataset may not include **all available television models**
-- Some information may be **outdated or incomplete**
-- Energy consumption may vary depending on **real-world usage conditions**
-
-These factors should be considered when interpreting the visualisations.
-
-### Ethics
-
-When presenting data visualisations, it is important to ensure that the information is represented **accurately and responsibly**.
-
-This project follows ethical data visualisation practices by:
-
-- Avoiding misleading visual representations
-- Clearly explaining the context of the data
-- Presenting information transparently so viewers can interpret the results correctly
+Storyboard Three — "Marketing vs. Reality"
+- Issue: Heavy advertising and premium positioning make OLED seem like the must-have option, which pressures buyers toward more expensive and often less efficient models.
+- Demonstrate: A market-share pie chart shows most available models are LED/LCD options; OLED remains a smaller portion of the market.
+- Idea: Encourage buyers to consider advanced LED technologies (e.g., Mini-LED) and high-rated LED options as practical, energy-efficient alternatives to OLED.
+- Recommendation: For most buyers, stick with a high-rated LED/LCD TV unless you’re prepared to accept the higher cost and power use of OLED.
+- Before / After: Before — buyer chases rare, expensive OLED options and becomes frustrated. After — buyer chooses an affordable, efficient LED that meets needs and budget.
+- Goal: Help buyers choose realistic, widely available, efficient models without overspending on premium panel types.
 
 ---
 
-## AI Declaration
+## Storyboard Page: UI & Interaction
 
-Artificial Intelligence (AI) tools may have been used to assist with aspects of this assignment, such as:
+Location: `Exercise 3/index.html` (Storyboard section)
 
-- Generating example code
-- Improving code structure
-- Assisting with documentation writing
+Behaviour:
+- Side-by-side layout: left selection panel (thumbnails) + right main display (large preview + title).
+- Thumbnails: three small images (from `image/` folder) arranged vertically. Clicking a thumbnail selects it.
+- Default: the first storyboard is selected and displayed when the page loads.
+- On selection: the main preview image and the title update; the selected thumbnail is visually highlighted; `aria-pressed` reflects state for accessibility.
 
-All AI-generated assistance was reviewed, modified where necessary, and integrated responsibly into the project.
+Files involved:
+- `index.html` — contains the markup for the Storyboard page and thumbnails.
+- `css/style.css` — styles for layout, thumbnail sizing, preview area and responsive rules.
+- `js/storyboard.js` — selection logic which updates the preview `img` and title.
 
 ---
 
-## Website Storytelling
+## Assets
 
-The website has been updated to communicate a **data-driven story** based on the TV energy consumption dataset.
+Storyboard images (already included):
+- `Exercise 3/image/Storyboard1.png` — Storyboard One image
+- `Exercise 3/image/Storyboard2.png` — Storyboard Two image
+- `Exercise 3/image/Storyboard3.png` — Storyboard Three image
 
-The website includes:
+It is recommended to keep two versions of images for best performance:
+- a small thumbnail (for the selection panel)
+- a larger, high-resolution preview (for the main display)
 
-- Visualisations that present key insights from the dataset
-- Text explanations that help readers understand the meaning of the visualisations
-- Context that connects the data to real-world implications
+---
 
-The aim is to guide the viewer through the data in a way that is **informative, engaging, and easy to understand**.
+## How to run & test locally
+
+1. From the repository root, open the Storyboard page in your browser:
+
+```bash
+open "Exercise 3/index.html"
+```
+
+2. Click the "Storyboard" link in the navigation (or call `showPage('storyboard')` in the browser console).
+3. Confirm the following:
+ - The page loads showing "Storyboard One" by default.
+ - Clicking each thumbnail updates the preview image and title.
+ - The selected thumbnail receives a visual highlight and its `aria-pressed` attribute becomes `true`.
+
+---
+
+## Accessibility & Design Notes
+
+- Thumbnails are implemented as `<button>` elements to be keyboard-focusable and to expose press state via `aria-pressed`.
+- Contrast, spacing and type sizes are adjusted for readability. The preview area uses `object-fit: contain` to preserve the storyboard image aspect ratio while maximizing visibility.
+- On smaller screens the layout stacks vertically so thumbnails become a horizontal row above the preview.
+
+---
+
+## Recommendations & Next Steps
+
+- Create optimized thumbnails (smaller files) plus hi-res preview images to balance load time and readability.
+- Add a keyboard navigation feature (arrow keys) to move between storyboards.
+- Add a click-to-zoom or lightbox so users can inspect storyboard text in high detail.
+- Add a small fade transition when changing previews to improve perceived polish.
+
+If you want, I can implement any of the recommended improvements and wire in separate thumbnail files and a lightbox.
