@@ -1,0 +1,269 @@
+/* Color Palette & Variables */
+:root {
+    --primary-color: #2e7d32; /* Eco green */
+    --hover-color: #4caf50;
+    --bg-light: #f4f7f6;
+    --text-dark: #333;
+    --white: #ffffff;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+}
+
+/* Navbar styles */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: var(--white);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.nav-links .nav-item {
+    display: inline-block;
+    padding: 0.5rem 0.75rem;
+}
+
+.power-logo {
+    fill: var(--primary-color);
+    transition: fill 0.3s ease;
+}
+
+.power-logo:hover {
+    fill: var(--hover-color);
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+    margin: 0;
+}
+
+.nav-item {
+    text-decoration: none;
+    color: var(--text-dark);
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+/* Mouse over feedback */
+.nav-item:hover {
+    background-color: var(--primary-color);
+    color: var(--white);
+}
+
+/* Active page feedback style */
+.nav-item.active-page {
+    border-bottom: 3px solid var(--primary-color);
+    border-radius: 0;
+    color: var(--primary-color);
+}
+
+/* Layout */
+.content-wrapper {
+    
+    flex: 1 0 auto;
+    padding: 2rem;
+    /* increase max width so preview can be larger */
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.info-cards {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.card {
+    background: var(--white);
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    flex: 1;
+}
+
+footer {
+    text-align: center;
+    padding: 1.5rem;
+    background-color: var(--white);
+    margin-top: 0;
+    font-size: 0.9rem;
+    border-top: 1px solid #ddd;
+}
+
+/*Table*/
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    margin: 20px 0;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* Hide all pages by default */
+.page {
+    display: none;
+}
+
+/* Show active page */
+.page.active {
+    display: block;
+}
+
+/* Storyboard page styles */
+.storyboard-container {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+    margin-top: 1rem;
+    /* keep the container visually balanced on wide screens */
+    align-content: start;
+}
+
+.storyboard-options {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    /* make the thumbnail panel narrower so preview gets more room */
+    flex: 0 0 160px;
+    align-items: center;
+}
+
+.storyboard-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    /* smaller thumbnail cards */
+    width: 140px;
+    padding: 0.5rem;
+    border: 2px solid transparent;
+    background: var(--white);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.storyboard-card:hover {
+    transform: translateY(-3px);
+}
+
+.storyboard-card.selected {
+    border-color: var(--primary-color);
+    box-shadow: 0 6px 18px rgba(46,125,50,0.12);
+}
+
+.thumb-svg {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+.thumb-img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.storyboard-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    width: 200px;
+    padding: 0.5rem;
+    border: 2px solid transparent;
+    background: var(--white);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card-title {
+    font-weight: 700;
+}
+
+.storyboard-preview {
+    flex: 1 1 auto;
+    background: var(--white);
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.preview-image-wrapper {
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.preview-image-wrapper img {
+    width: 100%;
+    height: auto;
+    display: block;
+    /* make it much larger so text in storyboards is readable */
+    max-height: 85vh;
+    object-fit: contain;
+    border-radius: 4px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+}
+
+.storyboard-preview h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+/* small visual polish */
+.storyboard-card .card-title {
+    font-size: 0.95rem;
+    text-align: center;
+}
+
+@media (max-width: 900px) {
+    .storyboard-container {
+        flex-direction: column;
+    }
+
+    .storyboard-options {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .storyboard-card {
+        width: 30%;
+    }
+}
