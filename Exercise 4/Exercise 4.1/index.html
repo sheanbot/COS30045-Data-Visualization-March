@@ -111,9 +111,18 @@
         <ul class="nav-links">
             <li><a href="#" class="nav-item" onclick="showPage('home')">Home</a></li>
             <li><a href="#" class="nav-item" onclick="showPage('televisions')">Televisions</a></li>
-            <li><a href="#" class="nav-item" onclick="showPage('drawing')">Drawing (Ex 4.1)</a></li>
             <li><a href="#" class="nav-item" onclick="showPage('about')">About Us</a></li>
             <li><a href="#" class="nav-item" onclick="showPage('storyboard')">Storyboard</a></li>
+            
+            <!-- Changed Exercise 4.1 to a Dropdown Menu -->
+            <li class="dropdown">
+                <a href="#" class="nav-item dropbtn">Exercise ▼</a>
+                <ul class="dropdown-content">
+                    <li><a href="#" onclick="showPage('drawing')">Drawing (Exercise 4.1)</a></li>
+                    <li><a href="#" onclick="showPage('exercise4-2')">Exercise 4.3</a></li>
+                    <li><a href="#" onclick="showPage('exercise4-3')">Exercise 4.4</a></li>
+                </ul>
+            </li>
         </ul>
     </nav>
 </header>
