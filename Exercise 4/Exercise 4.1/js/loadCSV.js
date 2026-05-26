@@ -29,3 +29,5 @@ fetch('data/televisions.csv')
     })
     // Handle any errors, e.g., file not found
     .catch(error => console.error('CSV load error:', error));
+
+    

@@ -214,6 +214,63 @@
                     <ellipse cx="240" cy="80" rx="40" ry="25" />
                 </g>
 
+                <!-- Additional clouds -->
+                <g id="clouds-extended" fill="#ffffff" opacity="0.9">
+                    <ellipse id="cloud-2" cx="420" cy="60" rx="55" ry="30" />
+                    <ellipse id="cloud-3" cx="470" cy="50" rx="40" ry="22" />
+                    <ellipse id="cloud-4" cx="520" cy="68" rx="48" ry="26" />
+                </g>
+                
+                <!-- More trees (left and right) -->
+                <g id="extra-trees" fill="#0b6623" stroke="#6b4219" stroke-width="6">
+                    <!-- Tree 3 (left-middle) -->
+                    <line x1="220" y1="460" x2="220" y2="380" stroke="#78350f" stroke-width="8" stroke-linecap="round" />
+                    <polygon id="tree-3" points="190,380 250,380 220,330" fill="#0f823a" stroke="none" />
+
+                    <!-- Tree 4 (right-middle) -->
+                    <line x1="600" y1="460" x2="600" y2="380" stroke="#78350f" stroke-width="8" stroke-linecap="round" />
+                    <polygon id="tree-4" points="570,380 630,380 600,330" fill="#0f823a" stroke="none" />
+                </g>
+
+                <!-- Small fish pond at bottom-right (moved slightly lower) -->
+                <g id="pond-1" transform="translate(620,490)">
+                     <!-- pond outer water -->
+                     <ellipse cx="70" cy="35" rx="70" ry="35" fill="#2563eb" stroke="#1e40af" stroke-width="3" />
+                     <!-- pond inner water -->
+                     <ellipse cx="70" cy="30" rx="55" ry="25" fill="#60a5fa" opacity="0.95" />
+
+                     <!-- lily pad -->
+                     <g transform="translate(110,20) rotate(-12)">
+                         <ellipse cx="0" cy="0" rx="14" ry="8" fill="#16a34a" stroke="#14532d" stroke-width="1"/>
+                         <path d="M-6,0 q6,-2 12,0" fill="#15803d" opacity="0.8"/>
+                     </g>
+
+                     <!-- fish 1 -->
+                     <g transform="translate(40,30) scale(0.95)">
+                         <ellipse cx="0" cy="0" rx="10" ry="6" fill="#ef4444"/>
+                         <polygon points="10,0 16,-5 16,5" fill="#b91c1c"/>
+                         <circle cx="-4" cy="-2" r="1.2" fill="#000"/>
+                     </g>
+
+                     <!-- fish 2 -->
+                     <g transform="translate(92,38) scale(0.78) rotate(-20)">
+                         <ellipse cx="0" cy="0" rx="8" ry="5" fill="#f59e0b"/>
+                         <polygon points="8,0 12,-4 12,4" fill="#b45309"/>
+                         <circle cx="-3" cy="-1" r="1" fill="#000"/>
+                     </g>
+
+                     <!-- stones along edge -->
+                     <g id="pond-stones" fill="#78716c" opacity="0.95">
+                         <ellipse cx="8" cy="62" rx="6" ry="3"/>
+                         <ellipse cx="36" cy="66" rx="8" ry="4"/>
+                         <ellipse cx="72" cy="68" rx="5" ry="3"/>
+                         <ellipse cx="106" cy="64" rx="7" ry="3.5"/>
+                     </g>
+
+                     <!-- gentle ripples -->
+                     <path d="M18,28 q28,8 56,0" stroke="#bfdbfe" stroke-width="1.6" fill="none" opacity="0.8" />
+                 </g>
+
                 <line x1="100" y1="450" x2="100" y2="350" stroke="#78350f" stroke-width="8" stroke-linecap="round" />
                 <polygon points="60,350 140,350 100,270" fill="#15803d" />
                 
@@ -294,6 +351,38 @@
                             <td><code>points="497,190 490,170 505,150 495,130"</code></td>
                             <td>An open, multi-segment connected zig-zag path layout tracing rising chimney smoke.</td>
                         </tr>
+
+                        <!-- New rows for added shapes -->
+                        <tr>
+                            <td class="shape-bold">Cloud (extended)</td>
+                            <td><code>&lt;ellipse id="cloud-2"&gt;</code></td>
+                            <td><code>cx="420" cy="60" rx="55" ry="30"</code></td>
+                            <td>Large cloud group added center-left of the sky for depth and balance.</td>
+                        </tr>
+                        <tr>
+                            <td class="shape-bold">Cloud (extended)</td>
+                            <td><code>&lt;ellipse id="cloud-3"&gt;</code></td>
+                            <td><code>cx="470" cy="50" rx="40" ry="22"</code></td>
+                            <td>Smaller cloud near the larger cloud cluster.</td>
+                        </tr>
+                        <tr>
+                            <td class="shape-bold">Tree (extra)</td>
+                            <td><code>&lt;polygon id="tree-3"&gt;</code></td>
+                            <td><code>points="190,380 250,380 220,330"</code></td>
+                            <td>Additional triangular tree on left-middle ground.</td>
+                        </tr>
+                        <tr>
+                            <td class="shape-bold">Tree (extra)</td>
+                            <td><code>&lt;polygon id="tree-4"&gt;</code></td>
+                            <td><code>points="570,380 630,380 600,330"</code></td>
+                            <td>Additional triangular tree on right-middle ground.</td>
+                        </tr>
+                        <tr>
+                            <td class="shape-bold">Fish Pond</td>
+                            <td><code>&lt;g id="pond-1"&gt;</code></td>
+                            <td><code>transform="translate(620,490)"</code></td>
+                            <td>Small backyard fish pond at bottom-right composed of layered ellipses for water, stones, a lily pad and simple fish shapes.</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -304,6 +393,22 @@
             <p><strong>Coordinate Matrix Mapping:</strong> The canvas maps from its absolute top-left vector origin point <code>(0,0)</code> down to the edge parameters <code>(800,600)</code>. Shapes like the Sun utilize coordinate points (<code>cx="700", cy="90"</code>) to map accurately onto the view plane.</p>
             <p><strong>Structural Organization (&lt;g&gt;):</strong> The matching structural windows were designed globally inside a singular definition block using uniform layout styling variables, and were positioned sequentially onto the canvas structure using precise geometric translation functions: <code>transform="translate(x, y)"</code>.</p>
             <p><strong>Generative AI & Tooling Declaration:</strong> Built with help from Gemini. Prompts were utilized to establish the layout coordinates of the SVG shapes, design the open polyline coordinates for the chimney smoke, and format structural styling properties without writing duplicate structural blocks.</p>
+        </div>
+
+        <!-- DOM screenshot / inspection section -->
+        <div class="documentation-section" id="dom-screenshot-section" style="margin-top:24px;">
+            <h2>DOM Screenshot / Capture Instructions</h2>
+            <p>To capture a screenshot of the SVG DOM node (useful for documentation):</p>
+            <ol>
+                <li>Open your browser DevTools (Right-click → Inspect or press <code>Cmd+Option+I</code> on macOS).</li>
+                <li>In Elements panel, locate the &lt;svg id="svg-canvas"&gt; node.</li>
+                <li>Right-click the &lt;svg&gt; node → <strong>Capture node screenshot</strong> (Chrome) or use the screenshot tool in your browser.</li>
+                <li>Paste the saved screenshot here or drag it into your project folder for reference.</li>
+            </ol>
+            <p>Optional: use the area below to paste or drop your screenshot file for quick preview:</p>
+            <div id="screenshot-drop" style="border:2px dashed #cbd5e1; padding:18px; border-radius:8px; text-align:center;">
+                <em>Drop/paste screenshot here (or open the file to view).</em>
+            </div>
         </div>
     </section>
 
