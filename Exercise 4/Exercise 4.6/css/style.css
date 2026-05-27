@@ -291,21 +291,6 @@ th {
     text-align: center;
 }
 
-/* responsive svg container for D3 charts */
-.responsive-svg-container {
-  margin-right: auto;
-  margin-left: auto;
-  width: 100%;
-  max-width: 900px; /* adjust for layout */
-  padding: 18px 12px;
-  box-sizing: border-box;
-}
-.responsive-svg-container svg {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
 @media (max-width: 900px) {
     .storyboard-container {
         flex-direction: column;
@@ -319,95 +304,4 @@ th {
     .storyboard-card {
         width: 30%;
     }
-}
-
-.canvas-container {
-    background-color: #ffffff;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-    margin: 20px auto;
-    max-width: 850px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.drawing-svg {
-    border: 2px solid #e2e8f0;
-    border-radius: 8px;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
-    background: linear-gradient(to bottom, #e0f2fe 0%, #bae6fd 70%, #86efac 70%, #4ade80 100%);
-}
-
-.documentation-section {
-    max-width: 850px;
-    margin: 30px auto;
-    background: #ffffff;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
-    border-left: 5px solid #2563eb;
-    text-align: left;
-}
-
-.documentation-section h2 {
-    color: #1e293b;
-    margin-top: 0;
-    font-size: 1.5rem;
-}
-
-.documentation-section p {
-    color: #475569;
-    line-height: 1.6;
-    margin-bottom: 12px;
-}
-
-/* ===== REVISED STEP 2 TABLE STYLING LINKED TO IMAGE ===== */
-.coordinate-table-wrapper {
-    width: 100%;
-    margin-top: 30px;
-    overflow-x: auto;
-}
-
-.coordinate-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-family: 'Segoe UI', system-ui, sans-serif;
-    font-size: 0.95rem;
-    text-align: left;
-}
-
-.coordinate-table th {
-    background-color: #1e3a8a;
-    color: #ffffff;
-    padding: 12px 16px;
-    font-weight: 600;
-    border: 1px solid #cbd5e1;
-}
-
-.coordinate-table td {
-    padding: 12px 16px;
-    border: 1px solid #cbd5e1;
-    color: #334155;
-    vertical-align: middle;
-}
-
-.coordinate-table tr:nth-child(even) {
-    background-color: #f8fafc;
-}
-
-.coordinate-table code {
-    background-color: #f1f5f9;
-    padding: 3px 6px;
-    border-radius: 4px;
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 0.9em;
-    color: #0f172a;
-    font-weight: 600;
-}
-
-.shape-bold {
-    font-weight: 700;
-    color: #1e293b;
 }

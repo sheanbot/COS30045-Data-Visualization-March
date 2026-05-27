@@ -293,17 +293,17 @@ th {
 
 /* responsive svg container for D3 charts */
 .responsive-svg-container {
-  margin-right: auto;
-  margin-left: auto;
-  width: 100%;
-  max-width: 900px; /* adjust for layout */
-  padding: 18px 12px;
-  box-sizing: border-box;
+    margin-right: auto;
+    margin-left: auto;
+    width: 100%;
+    max-width: 1200px;
+    padding: 12px;
+    box-sizing: border-box;
 }
 .responsive-svg-container svg {
-  width: 100%;
-  height: auto;
-  display: block;
+    width: 100%;
+    height: auto;
+    display: block;
 }
 
 @media (max-width: 900px) {
@@ -411,3 +411,4 @@ th {
     font-weight: 700;
     color: #1e293b;
 }
+
