@@ -5,99 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Appliance Energy Australia & Data Visualisation Labs</title>
     <link rel="stylesheet" href="css/style.css">
-    <style>
-        /* ===== EXERCISE 4.1 CUSTOM STYLING ===== */
-        .canvas-container {
-            background-color: #ffffff;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-            margin: 20px auto;
-            max-width: 850px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .drawing-svg {
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
-            background: linear-gradient(to bottom, #e0f2fe 0%, #bae6fd 70%, #86efac 70%, #4ade80 100%);
-        }
-
-        .documentation-section {
-            max-width: 850px;
-            margin: 30px auto;
-            background: #ffffff;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
-            border-left: 5px solid #2563eb;
-            text-align: left;
-        }
-
-        .documentation-section h2 {
-            color: #1e293b;
-            margin-top: 0;
-            font-size: 1.5rem;
-        }
-
-        .documentation-section p {
-            color: #475569;
-            line-height: 1.6;
-            margin-bottom: 12px;
-        }
-
-        /* ===== REVISED STEP 2 TABLE STYLING LINKED TO IMAGE ===== */
-        .coordinate-table-wrapper {
-            width: 100%;
-            margin-top: 30px;
-            overflow-x: auto;
-        }
-
-        .coordinate-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            font-size: 0.95rem;
-            text-align: left;
-        }
-
-        .coordinate-table th {
-            background-color: #1e3a8a;
-            color: #ffffff;
-            padding: 12px 16px;
-            font-weight: 600;
-            border: 1px solid #cbd5e1;
-        }
-
-        .coordinate-table td {
-            padding: 12px 16px;
-            border: 1px solid #cbd5e1;
-            color: #334155;
-            vertical-align: middle;
-        }
-
-        .coordinate-table tr:nth-child(even) {
-            background-color: #f8fafc;
-        }
-
-        .coordinate-table code {
-            background-color: #f1f5f9;
-            padding: 3px 6px;
-            border-radius: 4px;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 0.9em;
-            color: #0f172a;
-            font-weight: 600;
-        }
-
-        .shape-bold {
-            font-weight: 700;
-            color: #1e293b;
-        }
-    </style>
 </head>
 <body>
 
@@ -114,13 +21,11 @@
             <li><a href="#" class="nav-item" onclick="showPage('about')">About Us</a></li>
             <li><a href="#" class="nav-item" onclick="showPage('storyboard')">Storyboard</a></li>
             
-            <!-- Changed Exercise 4.1 to a Dropdown Menu -->
             <li class="dropdown">
                 <a href="#" class="nav-item dropbtn">Exercise ▼</a>
                 <ul class="dropdown-content">
                     <li><a href="#" onclick="showPage('drawing')">SVG</a></li>
-                    <li><a href="#" onclick="showPage('exercise4-2')">Exercise 4.3</a></li>
-                    <li><a href="#" onclick="showPage('exercise4-3')">Exercise 4.4</a></li>
+                    <li><a href="#" onclick="showPage('exercise4-3')">Exercise 4.3 — D3 Bar Chart</a></li>
                 </ul>
             </li>
         </ul>
@@ -132,37 +37,26 @@
     <section id="home" class="page active">
         <section class="hero">
             <h1>Australian Appliance Energy Consumption</h1>
-            <p>
-                Understanding how household appliances contribute to your energy bill
-                and reducing Australia’s carbon footprint.
-            </p>
+            <p>Understanding how household appliances contribute to your energy bill and reducing Australia’s carbon footprint.</p>
         </section>
 
         <section class="info-cards">
             <div class="card">
                 <h2>The Star Rating System</h2>
-                <p>
-                    Australia’s Energy Rating Label helps consumers compare appliance
-                    efficiency and running costs.
-                </p>
+                <p>Australia’s Energy Rating Label helps consumers compare appliance efficiency and running costs.</p>
             </div>
-
             <div class="card">
                 <h2>Why It Matters</h2>
-                <p>
-                    Energy-efficient appliances reduce electricity costs and help
-                    protect the environment.
-                </p>
+                <p>Energy-efficient appliances reduce electricity costs and help protect the environment.</p>
             </div>
         </section>
     </section>
 
     <section id="televisions" class="page">
         <h1>Television Energy Efficiency (2026)</h1>
-
         <table id="tv-table">
             <thead>
-                <tr>
+                <tr>    
                     <th>Model</th>
                     <th>Technology</th>
                     <th>Star Rating</th>
@@ -170,8 +64,7 @@
                     <th>Cost ($/Year)</th>
                 </tr>
             </thead>
-            <tbody>
-                </tbody>
+            <tbody></tbody>
         </table>
     </section>
 
@@ -183,7 +76,6 @@
 
         <div class="canvas-container">
             <svg id="svg-canvas" class="drawing-svg" width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
-                
                 <defs>
                     <linearGradient id="skyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
                         <stop offset="0%" stop-color="#7dd3fc" />
@@ -201,76 +93,6 @@
                         <stop offset="0%" stop-color="#38bdf8" />
                         <stop offset="100%" stop-color="#0284c7" />
                     </linearGradient>
-                </defs>
-
-                <rect x="0" y="0" width="800" height="420" fill="url(#skyGradient)" />
-                <rect x="0" y="420" width="800" height="180" fill="#22c55e" />
-
-                <circle cx="700" cy="90" r="45" fill="#facc15" stroke="#eab308" stroke-width="4" />
-                
-                <!-- existing cloud group -->
-                <g id="clouds" fill="#ffffff" opacity="0.85">
-                    <ellipse cx="160" cy="80" rx="40" ry="25" />
-                    <ellipse cx="200" cy="70" rx="50" ry="30" />
-                    <ellipse cx="240" cy="80" rx="40" ry="25" />
-                </g>
-
-                <!-- Small fish pond at bottom-right (moved slightly lower) -->
-                <g id="pond-1" transform="translate(620,490)">
-                     <!-- pond outer water -->
-                     <ellipse cx="70" cy="35" rx="70" ry="35" fill="#2563eb" stroke="#1e40af" stroke-width="3" />
-                     <!-- pond inner water -->
-                     <ellipse cx="70" cy="30" rx="55" ry="25" fill="#60a5fa" opacity="0.95" />
-
-                     <!-- lily pad -->
-                     <g transform="translate(110,20) rotate(-12)">
-                         <ellipse cx="0" cy="0" rx="14" ry="8" fill="#16a34a" stroke="#14532d" stroke-width="1"/>
-                         <path d="M-6,0 q6,-2 12,0" fill="#15803d" opacity="0.8"/>
-                     </g>
-
-                     <!-- fish 1 -->
-                     <g transform="translate(40,30) scale(0.95)">
-                         <ellipse cx="0" cy="0" rx="10" ry="6" fill="#ef4444"/>
-                         <polygon points="10,0 16,-5 16,5" fill="#b91c1c"/>
-                         <circle cx="-4" cy="-2" r="1.2" fill="#000"/>
-                     </g>
-
-                     <!-- fish 2 -->
-                     <g transform="translate(92,38) scale(0.78) rotate(-20)">
-                         <ellipse cx="0" cy="0" rx="8" ry="5" fill="#f59e0b"/>
-                         <polygon points="8,0 12,-4 12,4" fill="#b45309"/>
-                         <circle cx="-3" cy="-1" r="1" fill="#000"/>
-                     </g>
-
-                     <!-- stones along edge -->
-                     <g id="pond-stones" fill="#78716c" opacity="0.95">
-                         <ellipse cx="8" cy="62" rx="6" ry="3"/>
-                         <ellipse cx="36" cy="66" rx="8" ry="4"/>
-                         <ellipse cx="72" cy="68" rx="5" ry="3"/>
-                         <ellipse cx="106" cy="64" rx="7" ry="3.5"/>
-                     </g>
-
-                     <!-- gentle ripples -->
-                     <path d="M18,28 q28,8 56,0" stroke="#bfdbfe" stroke-width="1.6" fill="none" opacity="0.8" />
-                 </g>
-
-                <line x1="100" y1="450" x2="100" y2="350" stroke="#78350f" stroke-width="8" stroke-linecap="round" />
-                <polygon points="60,350 140,350 100,270" fill="#15803d" />
-                
-                <line x1="680" y1="460" x2="680" y2="370" stroke="#78350f" stroke-width="10" stroke-linecap="round" />
-                <polygon points="630,370 730,370 680,290" fill="#166534" />
-
-                <rect x="480" y="200" width="35" height="70" fill="#475569" stroke="#334155" stroke-width="2" />
-                <polyline points="497,190 490,170 505,150 495,130" fill="none" stroke="#94a3b8" stroke-width="4" stroke-linecap="round" opacity="0.6" />
-
-                <rect id="main-house-wall" x="280" y="290" width="260" height="200" fill="url(#wallGradient)" stroke="#475569" stroke-width="4" rx="4" ry="4" />
-
-                <polygon points="260,290 560,290 410,180" fill="url(#roofGradient)" stroke="#7f1d1d" stroke-width="3" />
-
-                <rect x="380" y="380" width="60" height="110" fill="#b91c1c" stroke="#7f1d1d" stroke-width="2" />
-                <circle cx="430" cy="435" r="4" fill="#facc15" />
-
-                <defs>
                     <g id="window-blueprint" stroke="#334155" stroke-width="3" fill="url(#glassGradient)">
                         <rect x="0" y="0" width="50" height="50" rx="5" />
                         <line x1="25" y1="0" x2="25" y2="50" stroke="#334155" stroke-width="2" />
@@ -278,186 +100,108 @@
                     </g>
                 </defs>
 
+                <rect x="0" y="0" width="800" height="420" fill="url(#skyGradient)" />
+                <rect x="0" y="420" width="800" height="180" fill="#22c55e" />
+                <circle cx="700" cy="90" r="45" fill="#facc15" stroke="#eab308" stroke-width="4" />
+                
+                <g id="clouds" fill="#ffffff" opacity="0.85">
+                    <ellipse cx="160" cy="80" rx="40" ry="25" />
+                    <ellipse cx="200" cy="70" rx="50" ry="30" />
+                    <ellipse cx="240" cy="80" rx="40" ry="25" />
+                </g>
+
+                <g id="pond-1" transform="translate(620,490)">
+                     <ellipse cx="70" cy="35" rx="70" ry="35" fill="#2563eb" stroke="#1e40af" stroke-width="3" />
+                     <ellipse cx="70" cy="30" rx="55" ry="25" fill="#60a5fa" opacity="0.95" />
+                     <g transform="translate(110,20) rotate(-12)">
+                         <ellipse cx="0" cy="0" rx="14" ry="8" fill="#16a34a" stroke="#14532d" stroke-width="1"/>
+                         <path d="M-6,0 q6,-2 12,0" fill="#15803d" opacity="0.8"/>
+                     </g>
+                     <g transform="translate(40,30) scale(0.95)">
+                         <ellipse cx="0" cy="0" rx="10" ry="6" fill="#ef4444"/>
+                         <polygon points="10,0 16,-5 16,5" fill="#b91c1c"/>
+                         <circle cx="-4" cy="-2" r="1.2" fill="#000"/>
+                     </g>
+                     <g transform="translate(92,38) scale(0.78) rotate(-20)">
+                         <ellipse cx="0" cy="0" rx="8" ry="5" fill="#f59e0b"/>
+                         <polygon points="8,0 12,-4 12,4" fill="#b45309"/>
+                         <circle cx="-3" cy="-1" r="1" fill="#000"/>
+                     </g>
+                     <g id="pond-stones" fill="#78716c" opacity="0.95">
+                         <ellipse cx="8" cy="62" rx="6" ry="3"/>
+                         <ellipse cx="36" cy="66" rx="8" ry="4"/>
+                         <ellipse cx="72" cy="68" rx="5" ry="3"/>
+                         <ellipse cx="106" cy="64" rx="7" ry="3.5"/>
+                     </g>
+                     <path d="M18,28 q28,8 56,0" stroke="#bfdbfe" stroke-width="1.6" fill="none" opacity="0.8" />
+                 </g>
+
+                <line x1="100" y1="450" x2="100" y2="350" stroke="#78350f" stroke-width="8" stroke-linecap="round" />
+                <polygon points="60,350 140,350 100,270" fill="#15803d" />
+                <line x1="680" y1="460" x2="680" y2="370" stroke="#78350f" stroke-width="10" stroke-linecap="round" />
+                <polygon points="630,370 730,370 680,290" fill="#166534" />
+
+                <rect x="480" y="200" width="35" height="70" fill="#475569" stroke="#334155" stroke-width="2" />
+                <polyline points="497,190 490,170 505,150 495,130" fill="none" stroke="#94a3b8" stroke-width="4" stroke-linecap="round" opacity="0.6" />
+                <rect id="main-house-wall" x="280" y="290" width="260" height="200" fill="url(#wallGradient)" stroke="#475569" stroke-width="4" rx="4" ry="4" />
+                <polygon points="260,290 560,290 410,180" fill="url(#roofGradient)" stroke="#7f1d1d" stroke-width="3" />
+                <rect x="380" y="380" width="60" height="110" fill="#b91c1c" stroke="#7f1d1d" stroke-width="2" />
+                <circle cx="430" cy="435" r="4" fill="#facc15" />
+
                 <use href="#window-blueprint" transform="translate(310, 320)" />
                 <use href="#window-blueprint" transform="translate(460, 320)" />
 
                 <polygon points="380,490 440,490 470,600 350,600" fill="#64748b" opacity="0.9" />
                 <polyline points="0,500 280,500 280,490 280,520 280,505 140,505 140,480 140,530 140,505 0,505" fill="none" stroke="#e2e8f0" stroke-width="4" stroke-linecap="round" />
-
-                
             </svg>
-
-            <div class="coordinate-table-wrapper">
-                <table class="coordinate-table">
-                    <thead>
-                        <tr>
-                            <th>Shape</th>
-                            <th>Element in Code</th>
-                            <th>Key Coordinate/Attribute</th>
-                            <th>What It Draws</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="shape-bold">Rectangle</td>
-                            <td><code>&lt;rect&gt;</code></td>
-                            <td><code>x="280" y="290" width="260" height="200"</code></td>
-                            <td>A large rectangle forming the house base body wall framework.</td>
-                        </tr>
-                        <tr>
-                            <td class="shape-bold">Triangle</td>
-                            <td><code>&lt;polygon&gt;</code></td>
-                            <td><code>points="260,290 560,290 410,180"</code></td>
-                            <td>A closed triangle element that forms the architectural roof peak over the house.</td>
-                        </tr>
-                        <tr>
-                            <td class="shape-bold">Circle</td>
-                            <td><code>&lt;circle&gt;</code></td>
-                            <td><code>cx="700" cy="90" r="45"</code></td>
-                            <td>A perfect circle positioned in the top-right sky area representing the sun.</td>
-                        </tr>
-                        <tr>
-                            <td class="shape-bold">Ellipse</td>
-                            <td><code>&lt;ellipse&gt;</code></td>
-                            <td><code>cx="200" cy="70" rx="50" ry="30"</code></td>
-                            <td>An elongated oval element creating a balanced, rounded cloud segment.</td>
-                        </tr>
-                        <tr>
-                            <td class="shape-bold">Line</td>
-                            <td><code>&lt;line&gt;</code></td>
-                            <td><code>x1="100" y1="450" x2="100" y2="350"</code></td>
-                            <td>A straight vertical line segment acting as a structural tree trunk anchor.</td>
-                        </tr>
-                        <tr>
-                            <td class="shape-bold">Polyline</td>
-                            <td><code>&lt;polyline&gt;</code></td>
-                            <td><code>points="497,190 490,170 505,150 495,130"</code></td>
-                            <td>An open, multi-segment connected zig-zag path layout tracing rising chimney smoke.</td>
-                        </tr>
-
-                        <!-- Removed entries for cloud-2, cloud-3, tree-3 and tree-4 -->
-                        <tr>
-                            <td class="shape-bold">Group: Fish Pond (wrapper)</td>
-                            <td><code>&lt;g id="pond-1"&gt;</code></td>
-                            <td><code>transform="translate(620,490)"</code></td>
-                            <td>Container group for the entire fish pond — use to move/scale the pond as a single unit.</td>
-                        </tr>
-                        <tr>
-                            <td class="shape-bold">Ellipse: Pond (outer rim)</td>
-                            <td><code>&lt;ellipse&gt;</code></td>
-                            <td><code>cx="70" cy="35" rx="70" ry="35" stroke="#1e40af" stroke-width="3"</code></td>
-                            <td>Outer water shape providing rim / darker edge for the pond.</td>
-                        </tr>
-                        <tr>
-                            <td class="shape-bold">Ellipse: Pond (surface)</td>
-                            <td><code>&lt;ellipse&gt;</code></td>
-                            <td><code>cx="70" cy="30" rx="55" ry="25" fill="#60a5fa" opacity="0.95"</code></td>
-                            <td>Inner, lighter water surface layer.</td>
-                        </tr>
-                        <tr>
-                            <td class="shape-bold">Group: Lily pad</td>
-                            <td><code>&lt;g&gt; &lt;ellipse&gt; &lt;path&gt;</code></td>
-                            <td><code>transform="translate(110,20) rotate(-12)" / ellipse rx="14" ry="8"</code></td>
-                            <td>Lily pad element and small vein/highlight; positioned on the pond surface.</td>
-                        </tr>
-                        <tr>
-                            <td class="shape-bold">Group: Fish (1)</td>
-                            <td><code>&lt;g&gt; &lt;ellipse&gt; &lt;polygon&gt; &lt;circle&gt;</code></td>
-                            <td><code>transform="translate(40,30) scale(0.95)" / ellipse rx="10" ry="6"</code></td>
-                            <td>Simple fish composed of an ellipse (body), polygon (tail) and circle (eye).</td>
-                        </tr>
-                        <tr>
-                            <td class="shape-bold">Group: Fish (2)</td>
-                            <td><code>&lt;g&gt; &lt;ellipse&gt; &lt;polygon&gt; &lt;circle&gt;</code></td>
-                            <td><code>transform="translate(92,38) scale(0.78) rotate(-20)" / ellipse rx="8" ry="5"</code></td>
-                            <td>Second fish with smaller scale & rotated orientation for variety.</td>
-                        </tr>
-                        <tr>
-                            <td class="shape-bold">Group: Stones (edge)</td>
-                            <td><code>&lt;g id="pond-stones"&gt; &lt;ellipse&gt;…</code></td>
-                            <td><code>ellipse cx="8" cy="62" rx="6" ry="3" / others at cx=36,72,106</code></td>
-                            <td>Small stones placed along the pond edge for natural detail.</td>
-                        </tr>
-                        <tr>
-                            <td class="shape-bold">Path: Ripples</td>
-                            <td><code>&lt;path d="M18,28 q28,8 56,0"&gt;</code></td>
-                            <td><code>stroke="#bfdbfe" stroke-width="1.6" fill="none" opacity="0.8"</code></td>
-                            <td>Gentle surface ripple to suggest subtle water movement.</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
         </div>
+    </section>
 
-        <div class="documentation-section">
-            <h2>Exercise 4.1 Academic Submission Summary</h2>
-            <p><strong>Coordinate Matrix Mapping:</strong> The canvas maps from its absolute top-left vector origin point <code>(0,0)</code> down to the edge parameters <code>(800,600)</code>. Shapes like the Sun utilize coordinate points (<code>cx="700", cy="90"</code>) to map accurately onto the view plane.</p>
-            <p><strong>Structural Organization (&lt;g&gt;):</strong> The matching structural windows were designed globally inside a singular definition block using uniform layout styling variables, and were positioned sequentially onto the canvas structure using precise geometric translation functions: <code>transform="translate(x, y)"</code>.</p>
-        </div>
-
-        <!-- DOM screenshot / inspection section -->
-        <div class="documentation-section" id="dom-screenshot-section" style="margin-top:24px;">
-            <h2>DOM Screenshot / Capture Instructions</h2>
-            <div id="screenshot-drop" style="border:2px dashed #cbd5e1; padding:18px; border-radius:8px; text-align:center;">
-                <!-- Saved DOM screenshot preview -->
-                <img id="dom-screenshot-img"
-                     src="image/dom-screenshot.png"
-                     alt="DOM screenshot preview"
-                     style="max-width:100%; height:auto; border-radius:8px; box-shadow:0 6px 18px rgba(2,6,23,0.12); display:block; margin:0 auto;" />
-                <p style="margin-top:10px; color:#475569; font-size:0.95rem;">
-                    Screenshot added to the DOM screenshot area. 
-                </p>
-            </div>
-        </div>
+    <section id="exercise4-3" class="page">
+        <h1>Exercise 4.6 — Scaled D3 Bar Chart</h1>
+        <div class="responsive-svg-container" id="chart-container" aria-label="D3 bar chart container"></div>
     </section>
 
     <section id="about" class="page">
         <h1>About This Project</h1>
-        <p>
-            This website was developed as part of
-            <strong>COS30045 Data Visualisation</strong> at Swinburne University
-            of Technology.
-        </p>
+        <p>This website was developed as part of <strong>COS30045 Data Visualisation</strong> at Swinburne University of Technology.</p>
     </section>
 
     <section id="storyboard" class="page">
         <h1>Storyboard</h1>
-
         <div class="storyboard-container">
             <div class="storyboard-options" role="list">
-                <button class="storyboard-card selected" data-index="0" onclick="selectStoryboard(0)" aria-pressed="true">
-                    <img src="image/Storyboard1.png" alt="Storyboard One thumbnail" class="thumb-img" />
+                <button class="storyboard-card selected" onclick="selectStoryboard(0)">
+                    <img src="image/Storyboard1.png" alt="Storyboard 1" class="thumb-img" />
                     <div class="card-title">Storyboard One</div>
                 </button>
-
-                <button class="storyboard-card" data-index="1" onclick="selectStoryboard(1)" aria-pressed="false">
-                    <img src="image/Storyboard2.png" alt="Storyboard Two thumbnail" class="thumb-img" />
+                <button class="storyboard-card" onclick="selectStoryboard(1)">
+                    <img src="image/Storyboard2.png" alt="Storyboard 2" class="thumb-img" />
                     <div class="card-title">Storyboard Two</div>
                 </button>
-
-                <button class="storyboard-card" data-index="2" onclick="selectStoryboard(2)" aria-pressed="false">
-                    <img src="image/Storyboard3.png" alt="Storyboard Three thumbnail" class="thumb-img" />
+                <button class="storyboard-card" onclick="selectStoryboard(2)">
+                    <img src="image/Storyboard3.png" alt="Storyboard 3" class="thumb-img" />
                     <div class="card-title">Storyboard Three</div>
                 </button>
             </div>
-
             <div class="storyboard-preview" id="storyboard-preview">
-                <h2 id="storyboard-title">Storyboard One</h2>
-                <div class="preview-image-wrapper" id="preview-image-wrapper">
-                    <img id="preview-image" src="image/Storyboard1.png" alt="Storyboard One large preview" />
+                <h2>Storyboard One</h2>
+                <div class="preview-image-wrapper">
+                    <img id="preview-image" src="image/Storyboard1.png" alt="Storyboard Preview" />
                 </div>
             </div>
         </div>
     </section>
-
 </main>
 
 <footer>
     <p>&copy; 2026 | Lee Zhao Shean | GenAI acknowledgement</p>
 </footer>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.4/d3.min.js"></script>
 <script src="js/navigation.js"></script>
 <script src="js/storyboard.js"></script>
 <script src="js/loadCSV.js"></script>
+<script src="js/ex4-3-bar.js"></script>
 </body>
 </html>
