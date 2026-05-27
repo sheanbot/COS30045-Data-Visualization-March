@@ -4,7 +4,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Request data and cast numeric column parameters cleanly
     d3.csv(csvPath, d => {
-        // Fallback checks to prevent script crashing if column headers are slightly off
         const modelName = d["Model"] || d["model"] || "Unknown Model";
         const energyValue = d["Annual Energy (kWh)"] || d["energy"] || d["Annual Energy"] || 0;
 
@@ -12,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
             model: modelName.trim(),
             technology: d["Technology"] || "N/A",
             starRating: d["Star Rating"] || "0",
-            energy: +energyValue, // Cast string to number explicitly
+            energy: +energyValue, 
             cost: d["Cost ($/Year)"] || "$0"
         };
     }).then(data => {
@@ -21,24 +20,23 @@ document.addEventListener("DOMContentLoaded", () => {
         // Sort descending by highest energy consumption
         data.sort((a, b) => b.energy - a.energy);
         
-        // Trigger the upscaled drawing engine
+        // Trigger the drawing engine
         createBarChart(data);
     }).catch(err => {
         console.error("D3 Engine Error Details:", err);
-        // Visual indicator on screen if data loading failed
         d3.select("#chart-container").selectAll("*").remove();
         d3.select("#chart-container").append("div")
           .style("color", "#dc2626")
           .style("padding", "20px")
           .style("background", "#fee2e2")
           .style("border-radius", "6px")
-          .html(`<strong>Failed to render chart:</strong> ${err.message}<br><small>Check browser console (F12) for detailed logs.</small>`);
+          .html(`<strong>Failed to render chart:</strong> ${err.message}`);
     });
 
     function createBarChart(data) {
         // --- GIANT CANVAS SCALING PARAMETERS ---
-        const viewBoxW = 1400; // Expanded base aspect canvas width 
-        const rowHeightAlloc = 65; // Height dedicated to each item track
+        const viewBoxW = 1400; 
+        const rowHeightAlloc = 65; 
         const margins = { top: 40, right: 120, bottom: 40, left: 260 }; 
         
         const innerW = viewBoxW - margins.left - margins.right;
@@ -49,12 +47,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const container = d3.select("#chart-container");
         container.selectAll("*").remove();
 
-        // Safety: If innerH calculations result in zero or invalid math, stop execution
-        if (isNaN(innerH) || innerH <= 0) {
-            console.error("Invalid dimensions computed: innerH =", innerH);
-            return;
-        }
-
         const svg = container.append("svg")
             .attr("viewBox", `0 0 ${viewBoxW} ${viewBoxH}`)
             .style("border", "1px solid #cbd5e1")
@@ -62,7 +54,8 @@ document.addEventListener("DOMContentLoaded", () => {
             .style("border-radius", "8px")
             .style("box-shadow", "0 6px 16px rgba(0,0,0,0.06)");
 
-        const g = svg.append("g")
+        // Base transform group to respect global outer page margins
+        const mainGroup = svg.append("g")
             .attr("transform", `translate(${margins.left}, ${margins.top})`);
 
         // --- SCALES CONFIGURATION ---
@@ -74,15 +67,27 @@ document.addEventListener("DOMContentLoaded", () => {
         const yScale = d3.scaleBand()
             .domain(data.map(d => d.model))
             .range([0, innerH])
-            .padding(0.18); // Thick bold bars look
+            .padding(0.2); 
 
-        // --- DRAW BARS ---
-        g.selectAll("rect.bar")
+        // =============================================================
+        // STEP 2: CREATE OBJECT GROUP HELDERS (<g>) FOR BARS & LABELS
+        // =============================================================
+        // This selection binds data to structural group tags instead of direct rect elements.
+        // The Y position is handled entirely by translating the parent group track!
+        const barAndLabel = mainGroup.selectAll("g.bar-row")
             .data(data)
-            .join("rect")
+            .join("g")
+            .attr("class", "bar-row")
+            .attr("transform", d => `translate(0, ${yScale(d.model)})`);
+
+        // =============================================================
+        // STEP 3: APPEND THE RECTANGLES TO THE GROUP HOOKS
+        // =============================================================
+        // Notice that .attr("y", 0) because the group wrapper coordinates handle the vertical layout offset.
+        barAndLabel.append("rect")
             .attr("class", d => `bar bar-${d.energy}`)
             .attr("x", 0)
-            .attr("y", d => yScale(d.model))
+            .attr("y", 0) // Reset to zero as per exercise rules
             .attr("width", d => xScale(d.energy))
             .attr("height", yScale.bandwidth())
             .attr("fill", "#2e7d32")
@@ -91,31 +96,30 @@ document.addEventListener("DOMContentLoaded", () => {
             .on("mouseover", function() { d3.select(this).attr("fill", "#1b5e20"); })
             .on("mouseout", function() { d3.select(this).attr("fill", "#2e7d32"); });
 
-        // --- DATA VALUE LABELS (RIGHT SIDE) ---
-        g.selectAll("text.val")
-            .data(data)
-            .join("text")
-            .attr("class", "val")
-            .attr("x", d => xScale(d.energy) + 14) 
-            .attr("y", d => yScale(d.model) + yScale.bandwidth() / 2 + 5) 
-            .text(d => `${d.energy} kWh`)
-            .attr("font-size", "14px")
-            .attr("font-weight", "600")
-            .attr("fill", "#475569")
-            .attr("font-family", "system-ui, sans-serif");
-
-        // --- MODEL BRAND LABELS (LEFT SIDE) ---
-        g.selectAll("text.label")
-            .data(data)
-            .join("text")
-            .attr("class", "label")
-            .attr("x", -18) 
-            .attr("y", d => yScale(d.model) + yScale.bandwidth() / 2 + 5)
-            .attr("text-anchor", "end")
+        // =============================================================
+        // STEP 4: APPEND CATEGORY TEXT (MODEL NAMES ON THE LEFT)
+        // =============================================================
+        barAndLabel.append("text")
             .text(d => d.model)
-            .attr("font-size", "14px")
-            .attr("font-weight", "500")
-            .attr("fill", "#1e293b")
-            .attr("font-family", "system-ui, sans-serif");
+            .attr("x", -18) // Positioned slightly left of the starting bar line edge
+            .attr("y", yScale.bandwidth() / 2 + 5) // Centered vertically relative to individual bar heights
+            .attr("text-anchor", "end")
+            .style("font-family", "system-ui, sans-serif")
+            .style("font-size", "14px")
+            .style("font-weight", "500")
+            .style("fill", "#1e293b");
+
+        // =============================================================
+        // STEP 5: APPEND COUNT VALUES (ENERGY CONSUMPTION VALUES ON THE RIGHT)
+        // =============================================================
+        barAndLabel.append("text")
+            .text(d => `${d.energy} kWh`)
+            .attr("x", d => xScale(d.energy) + 14) // Automatically offsets horizontally past the expanding scaled bar width
+            .attr("y", yScale.bandwidth() / 2 + 5) // Centered vertically relative to individual bar heights
+            .attr("text-anchor", "start")
+            .style("font-family", "system-ui, sans-serif")
+            .style("font-size", "14px")
+            .style("font-weight", "600")
+            .style("fill", "#475569");
     }
 });
