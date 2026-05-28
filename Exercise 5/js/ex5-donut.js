@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const container = d3.select("#donut-chart-container");
         container.selectAll("*").remove();
 
-        const svg = container.append("svg")
+        const svg = container.append("svg") 
             .attr("viewBox", `0 0 ${width} ${height}`)
             .style("width", "100%")
             .style("height", "auto");

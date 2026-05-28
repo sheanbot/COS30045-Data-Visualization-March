@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Appliance Energy Australia & Data Visualisation Labs</title>
     <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.4/d3.min.js"></script>
 </head>
 <body>
 
@@ -24,9 +25,10 @@
             <li class="dropdown">
                 <a href="#" class="nav-item dropbtn">Exercise ▼</a>
                 <ul class="dropdown-content">
-                    <li><a href="#" onclick="showPage('drawing')">SVG</a></li>
+                    <li><a href="#" onclick="showPage('drawing')">SVG Drawing</a></li>
                     <li><a href="#" onclick="showPage('exercise4-3')">D3 Bar Chart</a></li>
-                    <li><a href="#" onclick="showPage('exercise5')">Multi-Chart</a></li>
+                    <li><a href="#" onclick="showPage('exercise5')">Multi-Chart Dashboard</a></li>
+                    <li><a href="#" onclick="showPage('exercise6')">Interactive Histogram</a></li>
                 </ul>
             </li>
         </ul>
@@ -77,7 +79,6 @@
 
         <div class="canvas-container">
             <svg id="svg-canvas" class="drawing-svg" width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
-                
                 <defs>
                     <linearGradient id="skyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
                         <stop offset="0%" stop-color="#7dd3fc" />
@@ -102,41 +103,33 @@
 
                 <circle cx="700" cy="90" r="45" fill="#facc15" stroke="#eab308" stroke-width="4" />
                 
-                <!-- existing cloud group -->
                 <g id="clouds" fill="#ffffff" opacity="0.85">
                     <ellipse cx="160" cy="80" rx="40" ry="25" />
                     <ellipse cx="200" cy="70" rx="50" ry="30" />
                     <ellipse cx="240" cy="80" rx="40" ry="25" />
                 </g>
 
-                <!-- Small fish pond at bottom-right (moved slightly lower) -->
                 <g id="pond-1" transform="translate(620,490)">
-                     <!-- pond outer water -->
                      <ellipse cx="70" cy="35" rx="70" ry="35" fill="#2563eb" stroke="#1e40af" stroke-width="3" />
-                     <!-- pond inner water -->
                      <ellipse cx="70" cy="30" rx="55" ry="25" fill="#60a5fa" opacity="0.95" />
 
-                     <!-- lily pad -->
                      <g transform="translate(110,20) rotate(-12)">
                          <ellipse cx="0" cy="0" rx="14" ry="8" fill="#16a34a" stroke="#14532d" stroke-width="1"/>
                          <path d="M-6,0 q6,-2 12,0" fill="#15803d" opacity="0.8"/>
                      </g>
 
-                     <!-- fish 1 -->
                      <g transform="translate(40,30) scale(0.95)">
                          <ellipse cx="0" cy="0" rx="10" ry="6" fill="#ef4444"/>
                          <polygon points="10,0 16,-5 16,5" fill="#b91c1c"/>
                          <circle cx="-4" cy="-2" r="1.2" fill="#000"/>
                      </g>
 
-                     <!-- fish 2 -->
                      <g transform="translate(92,38) scale(0.78) rotate(-20)">
                          <ellipse cx="0" cy="0" rx="8" ry="5" fill="#f59e0b"/>
                          <polygon points="8,0 12,-4 12,4" fill="#b45309"/>
                          <circle cx="-3" cy="-1" r="1" fill="#000"/>
                      </g>
 
-                     <!-- stones along edge -->
                      <g id="pond-stones" fill="#78716c" opacity="0.95">
                          <ellipse cx="8" cy="62" rx="6" ry="3"/>
                          <ellipse cx="36" cy="66" rx="8" ry="4"/>
@@ -144,7 +137,6 @@
                          <ellipse cx="106" cy="64" rx="7" ry="3.5"/>
                      </g>
 
-                     <!-- gentle ripples -->
                      <path d="M18,28 q28,8 56,0" stroke="#bfdbfe" stroke-width="1.6" fill="none" opacity="0.8" />
                  </g>
 
@@ -177,8 +169,6 @@
 
                 <polygon points="380,490 440,490 470,600 350,600" fill="#64748b" opacity="0.9" />
                 <polyline points="0,500 280,500 280,490 280,520 280,505 140,505 140,480 140,530 140,505 0,505" fill="none" stroke="#e2e8f0" stroke-width="4" stroke-linecap="round" />
-
-                
             </svg>
 
             <div class="coordinate-table-wrapper">
@@ -228,55 +218,17 @@
                             <td><code>points="497,190 490,170 505,150 495,130"</code></td>
                             <td>An open, multi-segment connected zig-zag path layout tracing rising chimney smoke.</td>
                         </tr>
-
-                        <!-- Removed entries for cloud-2, cloud-3, tree-3 and tree-4 -->
                         <tr>
-                            <td class="shape-bold">Group: Fish Pond (wrapper)</td>
+                            <td class="shape-bold">Group: Fish Pond</td>
                             <td><code>&lt;g id="pond-1"&gt;</code></td>
                             <td><code>transform="translate(620,490)"</code></td>
-                            <td>Container group for the entire fish pond — use to move/scale the pond as a single unit.</td>
-                        </tr>
-                        <tr>
-                            <td class="shape-bold">Ellipse: Pond (outer rim)</td>
-                            <td><code>&lt;ellipse&gt;</code></td>
-                            <td><code>cx="70" cy="35" rx="70" ry="35" stroke="#1e40af" stroke-width="3"</code></td>
-                            <td>Outer water shape providing rim / darker edge for the pond.</td>
-                        </tr>
-                        <tr>
-                            <td class="shape-bold">Ellipse: Pond (surface)</td>
-                            <td><code>&lt;ellipse&gt;</code></td>
-                            <td><code>cx="70" cy="30" rx="55" ry="25" fill="#60a5fa" opacity="0.95"</code></td>
-                            <td>Inner, lighter water surface layer.</td>
-                        </tr>
-                        <tr>
-                            <td class="shape-bold">Group: Lily pad</td>
-                            <td><code>&lt;g&gt; &lt;ellipse&gt; &lt;path&gt;</code></td>
-                            <td><code>transform="translate(110,20) rotate(-12)" / ellipse rx="14" ry="8"</code></td>
-                            <td>Lily pad element and small vein/highlight; positioned on the pond surface.</td>
-                        </tr>
-                        <tr>
-                            <td class="shape-bold">Group: Fish (1)</td>
-                            <td><code>&lt;g&gt; &lt;ellipse&gt; &lt;polygon&gt; &lt;circle&gt;</code></td>
-                            <td><code>transform="translate(40,30) scale(0.95)" / ellipse rx="10" ry="6"</code></td>
-                            <td>Simple fish composed of an ellipse (body), polygon (tail) and circle (eye).</td>
-                        </tr>
-                        <tr>
-                            <td class="shape-bold">Group: Fish (2)</td>
-                            <td><code>&lt;g&gt; &lt;ellipse&gt; &lt;polygon&gt; &lt;circle&gt;</code></td>
-                            <td><code>transform="translate(92,38) scale(0.78) rotate(-20)" / ellipse rx="8" ry="5"</code></td>
-                            <td>Second fish with smaller scale & rotated orientation for variety.</td>
-                        </tr>
-                        <tr>
-                            <td class="shape-bold">Group: Stones (edge)</td>
-                            <td><code>&lt;g id="pond-stones"&gt; &lt;ellipse&gt;…</code></td>
-                            <td><code>ellipse cx="8" cy="62" rx="6" ry="3" / others at cx=36,72,106</code></td>
-                            <td>Small stones placed along the pond edge for natural detail.</td>
+                            <td>Container group for the entire structured fish pond vector area.</td>
                         </tr>
                         <tr>
                             <td class="shape-bold">Path: Ripples</td>
                             <td><code>&lt;path d="M18,28 q28,8 56,0"&gt;</code></td>
-                            <td><code>stroke="#bfdbfe" stroke-width="1.6" fill="none" opacity="0.8"</code></td>
-                            <td>Gentle surface ripple to suggest subtle water movement.</td>
+                            <td><code>stroke="#bfdbfe" stroke-width="1.6" fill="none"</code></td>
+                            <td>Gentle surface ripple to suggest organic water movement.</td>
                         </tr>
                     </tbody>
                 </table>
@@ -285,38 +237,30 @@
 
         <div class="documentation-section">
             <h2>Exercise 4.1 Academic Submission Summary</h2>
-            <p><strong>Coordinate Matrix Mapping:</strong> The canvas maps from its absolute top-left vector origin point <code>(0,0)</code> down to the edge parameters <code>(800,600)</code>. Shapes like the Sun utilize coordinate points (<code>cx="700", cy="90"</code>) to map accurately onto the view plane.</p>
-            <p><strong>Structural Organization (&lt;g&gt;):</strong> The matching structural windows were designed globally inside a singular definition block using uniform layout styling variables, and were positioned sequentially onto the canvas structure using precise geometric translation functions: <code>transform="translate(x, y)"</code>.</p>
+            <p><strong>Coordinate Matrix Mapping:</strong> The canvas maps from its absolute top-left vector origin point <code>(0,0)</code> down to the edge parameters <code>(800,600)</code>.</p>
+            <p><strong>Structural Organization (&lt;g&gt;):</strong> The matching structural windows were designed globally inside a singular definition block using uniform layout styling variables, and were positioned sequentially onto the canvas structure using precise geometric translation functions.</p>
         </div>
 
-        <!-- DOM screenshot / inspection section -->
         <div class="documentation-section" id="dom-screenshot-section" style="margin-top:24px;">
             <h2>DOM Screenshot / Capture Instructions</h2>
             <div id="screenshot-drop" style="border:2px dashed #cbd5e1; padding:18px; border-radius:8px; text-align:center;">
-                <!-- Saved DOM screenshot preview -->
-                <img id="dom-screenshot-img"
-                     src="image/dom-screenshot.png"
-                     alt="DOM screenshot preview"
-                     style="max-width:100%; height:auto; border-radius:8px; box-shadow:0 6px 18px rgba(2,6,23,0.12); display:block; margin:0 auto;" />
-                <p style="margin-top:10px; color:#475569; font-size:0.95rem;">
-                    Screenshot added to the DOM screenshot area. 
-                </p>
+                <img id="dom-screenshot-img" src="image/dom-screenshot.png" alt="DOM screenshot preview" style="max-width:100%; height:auto; border-radius:8px; box-shadow:0 6px 18px rgba(2,6,23,0.12); display:block; margin:0 auto;" />
+                <p style="margin-top:10px; color:#475569; font-size:0.95rem;">Screenshot added to the DOM screenshot area.</p>
             </div>
         </div>
     </section>
 
     <section id="exercise4-3" class="page">
-        <section class="hero" style="background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%); color: white; padding: 35px; border-radius: 10px; margin-bottom: 30px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-            <h1>Exercise 4.7: Data-Driven Document Grouping & Labels</h1>
+        <section class="hero" style="background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%); color: white; padding: 35px; border-radius: 10px; margin-bottom: 30px; text-align: center;">
+            <h1>Exercise 4.3: Data-Driven Document Grouping & Labels</h1>
             <p>Programmatic structural binding of horizontal bar elements and text metadata metrics using dynamic scale transformations.</p>
         </section>
 
         <div class="dashboard-grid" style="display: grid; grid-template-columns: 1fr; gap: 30px; margin-bottom: 40px;">
-            
             <div class="dashboard-card" style="background: #ffffff; padding: 25px; border-radius: 8px; border: 1px solid #cbd5e1; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
-                <h2 style="color: #1b5e20; margin-top: 0; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📊 Interactive Visualization Insight</h2>
+                <h2 style="color: #1b5e20; margin-top: 0; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">野 Interactive Visualization Insight</h2>
                 <p style="line-height: 1.6; color: #334155;">
-                    The chart below visualizes the <strong>Annual Energy Consumption (kWh/year)</strong> across major television models registered in the Australian marketplace for 2026. Higher energy values denote higher ongoing household operational electrical costs and an increased environmental carbon load footprint.
+                    The chart below visualizes the <strong>Annual Energy Consumption (kWh/year)</strong> across major television models registered in the Australian marketplace.
                 </p>
                 <div style="background: #f8fafc; padding: 15px; border-left: 4px solid #2e7d32; border-radius: 4px; font-size: 14px; color: #475569;">
                     <strong>Data Insights Tip:</strong> Hover over the dark green bars to visually track specific model tracks. The data is sorted sequentially in descending order so you can easily identify the highest power consumers instantly at a glance.
@@ -329,23 +273,21 @@
             </div>
 
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
-                
                 <div class="dashboard-card" style="background: #ffffff; padding: 25px; border-radius: 8px; border: 1px solid #cbd5e1; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
                     <h3 style="color: #1e293b; margin-top: 0;">⚙️ Technical Implementation</h3>
                     <ul style="padding-left: 20px; line-height: 1.7; color: #475569;">
                         <li><strong>D3.g Structural Hierarchy:</strong> Combines rectangles and metadata strings into an atomic <code>&lt;g class="bar-row"&gt;</code> element.</li>
-                        <li><strong>Dynamic Translation Matrix:</strong> Positions individual rows cleanly along the Y-axis plane using <code>yScale(d.model)</code> offsets.</li>
-                        <li><strong>Linear Scale Constraints:</strong> Normalizes raw energy data into pixel dimensions securely across available viewport boundary spaces using <code>d3.scaleLinear()</code>.</li>
+                        <li><strong>Dynamic Translation Matrix:</strong> Positions rows cleanly along the Y-axis plane using <code>yScale(d.model)</code> offsets.</li>
+                        <li><strong>Linear Scale Constraints:</strong> Normalizes raw energy data into pixel dimensions securely across available viewport spaces.</li>
                     </ul>
                 </div>
 
                 <div class="dashboard-card" style="background: #ffffff; padding: 25px; border-radius: 8px; border: 1px solid #cbd5e1; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
-                    <h3 style="color: #1e293b; margin-top: 0;">🎓 Core Objectives Met</h3>
+                    <h3 style="color: #1e293b; margin-top: 0;">Core Objectives Met</h3>
                     <p style="line-height: 1.6; color: #475569; font-size: 14px;">
-                        This lab demonstrates proficiency in coordinating relational dimensions across tabular datasets. By switching from manual primitive geometry plotting to runtime vector data binding transformations, the UI dynamically maps text labels and chart scale parameters to accurately reflect changes in the underlying database without causing element overlap.
+                        This lab demonstrates proficiency in coordinating relational dimensions across tabular datasets. By switching from manual primitive geometry plotting to runtime vector data binding transformations, the UI dynamically maps text labels and chart scale parameters.
                     </p>
                 </div>
-
             </div>
         </div>
     </section>
@@ -381,53 +323,82 @@
         </div>
     </section>
 
-    <!-- Exercise 5 -->
     <section id="exercise5" class="page" style="max-width: 1400px; margin: 0 auto; padding: 20px;">
-    
-    <div class="hero" style="background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%); color: white; padding: 35px; border-radius: 10px; margin-bottom: 30px; text-align: center;">
-        <h1>Exercise 5: Appliance Efficiency & Energy Analytics Market Overview</h1>
-        <p>A multi-dimensional exploratory dashboard examining television hardware trends, product life cycles, and macro power grid spot pricing matrices.</p>
-    </div>
+        <div class="hero" style="background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%); color: white; padding: 35px; border-radius: 10px; margin-bottom: 30px; text-align: center;">
+            <h1>Exercise 5: Appliance Efficiency & Energy Analytics Market Overview</h1>
+            <p>A multi-dimensional exploratory dashboard examining television hardware trends, product life cycles, and macro power grid spot pricing matrices.</p>
+        </div>
 
-    <div class="dashboard-container-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(600px, 1fr)); gap: 30px;">
+        <div class="dashboard-container-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(600px, 1fr)); gap: 30px;">
+            <div class="chart-card" style="background: #ffffff; padding: 20px; border-radius: 8px; border: 1px solid #cbd5e1; box-shadow: 0 4px 10px rgba(0,0,0,0.03);">
+                <h2 style="color: #1b5e20; font-size: 1.3rem; margin-top: 0; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px;">Energy Consumption vs. Star Rating</h2>
+                <p style="font-size: 13px; color: #64748b; line-height: 1.5; margin-bottom: 15px;">
+                    Explores correlation trends between a model's efficiency designation and its total electrical footprint.
+                </p>
+                <div id="scatter-plot-container" style="width: 100%; height: auto;"></div>
+            </div>
+
+            <div class="chart-card" style="background: #ffffff; padding: 20px; border-radius: 8px; border: 1px solid #cbd5e1; box-shadow: 0 4px 10px rgba(0,0,0,0.03);">
+                <h2 style="color: #1b5e20; font-size: 1.3rem; margin-top: 0; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px;">Energy Share by Screen Technology (All TVs)</h2>
+                <p style="font-size: 13px; color: #64748b; line-height: 1.5; margin-bottom: 15px;">
+                    Aggregates and breaks down cumulative operational power loads across technologies.
+                </p>
+                <div id="donut-chart-container" style="width: 100%; height: auto;"></div>
+            </div>
+
+            <div class="chart-card" style="background: #ffffff; padding: 20px; border-radius: 8px; border: 1px solid #cbd5e1; box-shadow: 0 4px 10px rgba(0,0,0,0.03);">
+                <h2 style="color: #1b5e20; font-size: 1.3rem; margin-top: 0; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px;">Screen Tech Energy Consumption (55-inch Only)</h2>
+                <p style="font-size: 13px; color: #64748b; line-height: 1.5; margin-bottom: 15px;">
+                    Normalizes physical surface area parameters by isolating 55-inch form factors exclusively.
+                </p>
+                <div id="group-bar-container" style="width: 100%; height: auto;"></div>
+            </div>
+
+            <div class="chart-card" style="background: #ffffff; padding: 20px; border-radius: 8px; border: 1px solid #cbd5e1; box-shadow: 0 4px 10px rgba(0,0,0,0.03);">
+                <h2 style="color: #1b5e20; font-size: 1.3rem; margin-top: 0; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px;">Macro Power Grid Historical Spot Prices (1998 - 2024)</h2>
+                <p style="font-size: 13px; color: #64748b; line-height: 1.5; margin-bottom: 15px;">
+                    Tracks structural pricing timelines across the Australian National Electricity Market (NEM).
+                </p>
+                <div id="line-chart-container" style="width: 100%; height: auto;"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="exercise6" class="page" style="max-width: 1400px; margin: 0 auto; padding: 20px;">
         
-        <div class="chart-card" style="background: #ffffff; padding: 20px; border-radius: 8px; border: 1px solid #cbd5e1; box-shadow: 0 4px 10px rgba(0,0,0,0.03);">
-            <h2 style="color: #1b5e20; font-size: 1.3rem; margin-top: 0; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px;">⚡ Energy Consumption vs. Star Rating</h2>
-            <p style="font-size: 13px; color: #64748b; line-height: 1.5; margin-bottom: 15px;">
-                Explores correlation trends between a model's efficiency designation and its total electrical footprint. Expect high-efficiency panels to nestle near the lower right quadrant.
-            </p>
-            <div id="scatter-plot-container" style="width: 100%; height: auto;"></div>
+        <header class="exercise-header" style="margin-bottom: 2rem; border-left: 4px solid #1e3a8a; padding-left: 1rem;">
+            <h1 style="font-size: 1.8rem; color: #0f172a; margin: 0 0 0.4rem 0;">Exercise 6.1 Interactive Histogram: Filtering</h1>
+            <h2 style="font-size: 1.1rem; font-weight: 500; color: #64748b; margin: 0;">Television Energy Consumption Distribution (Jan 2025 Market Registry)</h2>
+        </header>
+
+        <section class="info-cards-grid" style="display: flex; gap: 1.5rem; margin-bottom: 2.5rem;">
+            <div class="info-card" style="background: #ffffff; border-radius: 8px; padding: 1.5rem; flex: 1; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                <h3 style="margin: 0 0 0.75rem 0; font-size: 1.1rem; color: #1e3a8a;">Visualisation Aim</h3>
+                <p style="margin: 0; font-size: 0.95rem; line-height: 1.6; color: #475569;">Build an interactive histogram using D3 to map massive appliance registry entries, applying granular category event targeting so users can explore frequency distribution curves easily.</p>
+            </div>
+            <div class="info-card" style="background: #ffffff; border-radius: 8px; padding: 1.5rem; flex: 1; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                <h3 style="margin: 0 0 0.75rem 0; font-size: 1.1rem; color: #1e3a8a;">Analytical Context</h3>
+                <p style="margin: 0; font-size: 0.95rem; line-height: 1.6; color: #475569;">Histograms help reveal underlying patterns across data ranges. By using the technology filters below, you can analyze how energy consumption changes between LCD, LED, and OLED screen panels.</p>
+            </div>
+        </section>
+
+        <section class="interactive-workspace" style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 2rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
+            
+            <div class="filter-controls-wrapper" style="display: flex; flex-direction: column; align-items: center; gap: 0.75rem; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px dashed #e2e8f0;">
+                <span class="filter-label" style="font-size: 0.9rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">Filter by Display Panel:</span>
+                <div id="filters-container" class="filter-button-group">
+                    </div>
+            </div>
+
+            <div id="histogram-chart" class="chart-canvas-box" style="width: 100%; margin: 0 auto; background: #ffffff; padding: 0.5rem;">
+                </div>
+            
+        </section>
+        
+        <div style="background: #eff6ff; border: 1px solid #bfdbfe; padding: 15px; border-radius: 6px; font-size: 14px; color: #1e3a8a; line-height: 1.6; margin-top: 25px;">
+            <strong>Interaction Summary:</strong> Clicking display filter elements triggers dynamic array mutations in D3. The application updates scale limits seamlessly and shifts histogram bins via cubic easing transitions.
         </div>
-
-        <div class="chart-card" style="background: #ffffff; padding: 20px; border-radius: 8px; border: 1px solid #cbd5e1; box-shadow: 0 4px 10px rgba(0,0,0,0.03);">
-            <h2 style="color: #1b5e20; font-size: 1.3rem; margin-top: 0; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px;">🍩 Energy Share by Screen Technology (All TVs)</h2>
-            <p style="font-size: 13px; color: #64748b; line-height: 1.5; margin-bottom: 15px;">
-                Aggregates and breaks down cumulative operational power loads across technologies like LCD (LED), OLED, and QLED to identify marketplace category demands.
-            </p>
-            <div id="donut-chart-container" style="width: 100%; height: auto;"></div>
-        </div>
-
-        <div class="chart-card" style="background: #ffffff; padding: 20px; border-radius: 8px; border: 1px solid #cbd5e1; box-shadow: 0 4px 10px rgba(0,0,0,0.03);">
-            <h2 style="color: #1b5e20; font-size: 1.3rem; margin-top: 0; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px;">📊 Screen Tech Energy Consumption (55-inch Only)</h2>
-            <p style="font-size: 13px; color: #64748b; line-height: 1.5; margin-bottom: 15px;">
-                Normalizes physical surface area parameters by isolating 55-inch form factors exclusively, benchmarking hardware component efficiencies directly.
-            </p>
-            <div id="group-bar-container" style="width: 100%; height: auto;"></div>
-        </div>
-
-        <div class="chart-card" style="background: #ffffff; padding: 20px; border-radius: 8px; border: 1px solid #cbd5e1; box-shadow: 0 4px 10px rgba(0,0,0,0.03);">
-            <h2 style="color: #1b5e20; font-size: 1.3rem; margin-top: 0; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px;">📈 Macro Power Grid Historical Spot Prices (1998 - 2024)</h2>
-            <p style="font-size: 13px; color: #64748b; line-height: 1.5; margin-bottom: 15px;">
-                Tracks structural pricing timelines across the Australian National Electricity Market (NEM), charting inflation adjustments and structural grid supply shocks.
-            </p>
-            <div id="line-chart-container" style="width: 100%; height: auto;"></div>
-        </div>
-
-    </div>
-    
-</section>
-
-
+    </section>
 
 </main>
 
@@ -435,18 +406,19 @@
     <p>&copy; 2026 | Lee Zhao Shean | GenAI acknowledgement</p>
 </footer>
 
-
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.4/d3.min.js"></script>
-<script src="js/ex5-scatter.js"></script>
-<script src="js/ex5-donut.js"></script>
-<script src="js/ex5-techbar.js"></script>
-<script src="js/ex5-line.js"></script>
 <script src="js/navigation.js"></script>
 <script src="js/storyboard.js"></script>
 <script src="js/loadCSV.js"></script>
 <script src="js/ex4-3-bar.js"></script>
 
+<script src="js/ex5-scatter.js"></script>
+<script src="js/ex5-donut.js"></script>
+<script src="js/ex5-techbar.js"></script>
+<script src="js/ex5-line.js"></script>
+
+<script src="js/shared-constants.js"></script>
+<script src="js/interactions.js"></script>
+<script src="js/ex6-histogram.js"></script>
 
 </body>
 </html>

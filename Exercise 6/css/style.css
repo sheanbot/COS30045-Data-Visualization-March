@@ -460,3 +460,55 @@ th {
     display: block;
 }   
 
+/* Exercise 6 Interaction Filter Control Elements Layout */
+.filter-button-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin: 15px 0 25px 0;
+}
+
+.filter-btn {
+    background-color: #ffffff;
+    color: #475569;
+    border: 1px solid #cbd5e1;
+    padding: 8px 18px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.filter-btn:hover {
+    background-color: #f1f5f9;
+    color: #0f172a;
+    border-color: #94a3b8;
+}
+
+.filter-btn.active {
+    background-color: #1e3a8a; /* Theme coordinated deep blue */
+    color: #ffffff;
+    border-color: #1e3a8a;
+    box-shadow: 0 4px 6px -1px rgba(30, 58, 138, 0.25);
+}
+
+/* Ensure the chart area has a clean background and space to draw */
+#histogram-chart {
+    width: 100%;
+    min-height: 450px; /* Gives D3 a guaranteed height to render into */
+    background: #ffffff;
+    margin: 0 auto;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+/* Force the SVG appended by D3 to be visible and responsive */
+#histogram-chart svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+}
