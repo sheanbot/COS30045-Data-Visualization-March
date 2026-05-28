@@ -2,26 +2,54 @@
 document.addEventListener("DOMContentLoaded", () => {
     const csvPath = "data/televisions.csv";
 
-    // Request data and cast numeric column parameters cleanly
+    // Request data and parse the Brand and Power consumption metrics
     d3.csv(csvPath, d => {
-        const modelName = d["Model"] || d["model"] || "Unknown Model";
-        const energyValue = d["Annual Energy (kWh)"] || d["energy"] || d["Annual Energy"] || 0;
+        let brandName = (d["Brand_Reg"] || "Unknown Brand").trim().toUpperCase();
+        
+        // Normalize common brand variations so they merge into a single row
+        if (brandName.includes("SAMSUNG")) brandName = "SAMSUNG";
+        if (brandName.includes("SPARK")) brandName = "SPARK ELECTRONICS";
+        if (brandName.includes("TCL")) brandName = "TCL";
+        if (brandName.includes("KOGAN")) brandName = "KOGAN";
 
         return {
-            model: modelName.trim(),
-            technology: d["Technology"] || "N/A",
-            starRating: d["Star Rating"] || "0",
-            energy: +energyValue, 
-            cost: d["Cost ($/Year)"] || "$0"
+            brand: brandName,
+            energy: +(d["Avg_mode_power"] || 0)
         };
-    }).then(data => {
-        if (!data || !data.length) throw new Error("Dataset is empty or structural parse failed.");
+    }).then(rawData => {
+        if (!rawData || !rawData.length) throw new Error("Dataset is empty or structural parse failed.");
         
-        // Sort descending by highest energy consumption
-        data.sort((a, b) => b.energy - a.energy);
+        // =============================================================
+        // STEP 1: AGGREGATE DATA BY BRAND (GROUP BY)
+        // =============================================================
+        const brandTotals = {};
+        const brandCounts = {};
+
+        rawData.forEach(d => {
+            if (!brandTotals[d.brand]) {
+                brandTotals[d.brand] = 0;
+                brandCounts[d.brand] = 0;
+            }
+            brandTotals[d.brand] += d.energy;
+            brandCounts[d.brand] += 1;
+        });
+
+        // Convert the grouped data into an array of averages
+        let aggregatedData = Object.keys(brandTotals).map(brandKey => {
+            return {
+                brand: brandKey,
+                energy: brandTotals[brandKey] / brandCounts[brandKey] // Calculates average power
+            };
+        });
+
+        // 2. Sort descending by highest average power consumption
+        aggregatedData.sort((a, b) => b.energy - a.energy);
+        
+        // 3. Take the top 15 unique brands to display
+        const topUniqueBrands = aggregatedData.slice(0, 15);
         
         // Trigger the drawing engine
-        createBarChart(data);
+        createBarChart(topUniqueBrands);
     }).catch(err => {
         console.error("D3 Engine Error Details:", err);
         d3.select("#chart-container").selectAll("*").remove();
@@ -34,10 +62,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     function createBarChart(data) {
-        // --- GIANT CANVAS SCALING PARAMETERS ---
+        // --- CANVAS SCALING PARAMETERS ---
         const viewBoxW = 1400; 
-        const rowHeightAlloc = 65; 
-        const margins = { top: 40, right: 120, bottom: 40, left: 260 }; 
+        const rowHeightAlloc = 55; 
+        const margins = { top: 40, right: 140, bottom: 50, left: 240 }; 
         
         const innerW = viewBoxW - margins.left - margins.right;
         const innerH = data.length * rowHeightAlloc;
@@ -52,7 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
             .style("border", "1px solid #cbd5e1")
             .style("background-color", "#ffffff")
             .style("border-radius", "8px")
-            .style("box-shadow", "0 6px 16px rgba(0,0,0,0.06)");
+            .style("box-shadow", "0 4px 12px rgba(0,0,0,0.04)");
 
         // Base transform group to respect global outer page margins
         const mainGroup = svg.append("g")
@@ -61,65 +89,64 @@ document.addEventListener("DOMContentLoaded", () => {
         // --- SCALES CONFIGURATION ---
         const maxEnergy = d3.max(data, d => d.energy) || 100;
         const xScale = d3.scaleLinear()
-            .domain([0, maxEnergy])
+            .domain([0, maxEnergy * 1.05]) // 5% buffer on the right for text padding
             .range([0, innerW]);
 
+        // Since brands are now completely unique, we can safely use brand names as the domain directly
         const yScale = d3.scaleBand()
-            .domain(data.map(d => d.model))
+            .domain(data.map(d => d.brand)) 
             .range([0, innerH])
-            .padding(0.2); 
+            .padding(0.25); 
 
-        // =============================================================
-        // STEP 2: CREATE OBJECT GROUP HELDERS (<g>) FOR BARS & LABELS
-        // =============================================================
-        // This selection binds data to structural group tags instead of direct rect elements.
-        // The Y position is handled entirely by translating the parent group track!
+        // --- OBJECT GROUP HOLDERS (<g>) FOR BARS & LABELS ---
         const barAndLabel = mainGroup.selectAll("g.bar-row")
             .data(data)
             .join("g")
             .attr("class", "bar-row")
-            .attr("transform", d => `translate(0, ${yScale(d.model)})`);
+            .attr("transform", d => `translate(0, ${yScale(d.brand)})`);
 
-        // =============================================================
-        // STEP 3: APPEND THE RECTANGLES TO THE GROUP HOOKS
-        // =============================================================
-        // Notice that .attr("y", 0) because the group wrapper coordinates handle the vertical layout offset.
+        // --- APPEND THE HORIZONTAL BARS ---
         barAndLabel.append("rect")
-            .attr("class", d => `bar bar-${d.energy}`)
+            .attr("class", "bar")
             .attr("x", 0)
-            .attr("y", 0) // Reset to zero as per exercise rules
+            .attr("y", 0) 
             .attr("width", d => xScale(d.energy))
             .attr("height", yScale.bandwidth())
             .attr("fill", "#2e7d32")
             .style("cursor", "pointer")
-            .style("transition", "fill 0.2s ease")
             .on("mouseover", function() { d3.select(this).attr("fill", "#1b5e20"); })
             .on("mouseout", function() { d3.select(this).attr("fill", "#2e7d32"); });
 
-        // =============================================================
-        // STEP 4: APPEND CATEGORY TEXT (MODEL NAMES ON THE LEFT)
-        // =============================================================
+        // --- APPEND BRAND LABELS (ONE UNIQUE ENTRY PER BRAND) ---
         barAndLabel.append("text")
-            .text(d => d.model)
-            .attr("x", -18) // Positioned slightly left of the starting bar line edge
-            .attr("y", yScale.bandwidth() / 2 + 5) // Centered vertically relative to individual bar heights
+            .text(d => d.brand) 
+            .attr("x", -15) 
+            .attr("y", yScale.bandwidth() / 2 + 5) 
             .attr("text-anchor", "end")
             .style("font-family", "system-ui, sans-serif")
             .style("font-size", "14px")
-            .style("font-weight", "500")
+            .style("font-weight", "600")
             .style("fill", "#1e293b");
 
-        // =============================================================
-        // STEP 5: APPEND COUNT VALUES (ENERGY CONSUMPTION VALUES ON THE RIGHT)
-        // =============================================================
+        // --- APPEND DATA METRIC VALUES (AVERAGE POWER) ---
         barAndLabel.append("text")
-            .text(d => `${d.energy} kWh`)
-            .attr("x", d => xScale(d.energy) + 14) // Automatically offsets horizontally past the expanding scaled bar width
-            .attr("y", yScale.bandwidth() / 2 + 5) // Centered vertically relative to individual bar heights
+            .text(d => `${d.energy.toFixed(1)} W (Avg)`)
+            .attr("x", d => xScale(d.energy) + 12) 
+            .attr("y", yScale.bandwidth() / 2 + 5) 
             .attr("text-anchor", "start")
             .style("font-family", "system-ui, sans-serif")
-            .style("font-size", "14px")
+            .style("font-size", "13px")
             .style("font-weight", "600")
             .style("fill", "#475569");
+
+        // --- ADD BOTTOM GRID AXIS LINE FOR REFERENCE ---
+        const xAxis = d3.axisBottom(xScale).ticks(8);
+        mainGroup.append("g")
+            .attr("class", "x-axis")
+            .attr("transform", `translate(0, ${innerH})`)
+            .call(xAxis)
+            .style("font-family", "system-ui, sans-serif")
+            .style("font-size", "12px")
+            .style("color", "#64748b");
     }
 });
