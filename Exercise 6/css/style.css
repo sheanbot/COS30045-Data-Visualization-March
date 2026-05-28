@@ -348,7 +348,7 @@ th {
     padding: 30px;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.04);
-    border-left: 5px solid #2563eb;
+    border-left: 5px solid #1b5e20;
     text-align: left;
 }
 
@@ -380,7 +380,7 @@ th {
 }
 
 .coordinate-table th {
-    background-color: #1e3a8a;
+    background-color: #1b5e20;
     color: #ffffff;
     padding: 12px 16px;
     font-weight: 600;
@@ -489,9 +489,9 @@ th {
 }
 
 .filter-btn.active {
-    background-color: #1e3a8a; /* Theme coordinated deep blue */
+    background-color: #1b5e20; /* Theme coordinated deep green */
     color: #ffffff;
-    border-color: #1e3a8a;
+    border-color: #164c19;
     box-shadow: 0 4px 6px -1px rgba(30, 58, 138, 0.25);
 }
 
