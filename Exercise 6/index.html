@@ -367,36 +367,43 @@
     <section id="exercise6" class="page" style="max-width: 1400px; margin: 0 auto; padding: 20px;">
         
         <header class="exercise-header" style="margin-bottom: 2rem; border-left: 4px solid #1b5e20; padding-left: 1rem;">
-            <h1 style="font-size: 1.8rem; color: #0f172a; margin: 0 0 0.4rem 0;">Exercise 6.1 Interactive Histogram: Filtering</h1>
-            <h2 style="font-size: 1.1rem; font-weight: 500; color: #64748b; margin: 0;">Television Energy Consumption Distribution (Jan 2025 Market Registry)</h2>
+            <h1 style="font-size: 1.8rem; color: #0f172a; margin: 0 0 0.4rem 0;">Exercise 6.1 & 6.2: Interactive Histogram & Transitions</h1>
+            <h2 style="font-size: 1.1rem; font-weight: 500; color: #64748b; margin: 0;">Television Energy Consumption Distribution with Easing Animations</h2>
         </header>
 
         <section class="info-cards-grid" style="display: flex; gap: 1.5rem; margin-bottom: 2.5rem;">
             <div class="info-card" style="background: #ffffff; border-radius: 8px; padding: 1.5rem; flex: 1; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-                <h3 style="margin: 0 0 0.75rem 0; font-size: 1.1rem; color: #1b5e20;">Visualisation Aim</h3>
-                <p style="margin: 0; font-size: 0.95rem; line-height: 1.6; color: #475569;">Create an interactive D3 histogram that shows a large set of appliance registry data. It helps users explore how often different values appear by using categories and filters.</p>
+                <h3 style="margin: 0 0 0.75rem 0; font-size: 1.1rem; color: #1b5e20;">Exercise 6.1: Filtering Aim</h3>
+                <p style="margin: 0; font-size: 0.95rem; line-height: 1.6; color: #475569;">Binds event handling arrays to dynamically partition the dataset based on screen panel types (LCD, LED, OLED).</p>
             </div>
             <div class="info-card" style="background: #ffffff; border-radius: 8px; padding: 1.5rem; flex: 1; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-                <h3 style="margin: 0 0 0.75rem 0; font-size: 1.1rem; color: #1b5e20;">Analytical Context</h3>
-                <p style="margin: 0; font-size: 0.95rem; line-height: 1.6; color: #475569;">Histograms are useful for showing patterns in data ranges. In this case, users can use filters to compare energy usage across different screen types like LCD, LED, and OLED, and easily see how the values are distributed.</p>
+                <h3 style="margin: 0 0 0.75rem 0; font-size: 1.1rem; color: #1b5e20;">Exercise 6.2: Transition Logic</h3>
+                <p style="margin: 0; font-size: 0.95rem; line-height: 1.6; color: #475569;">Applies a unified <code>d3.easeCubicInOut</code> state transition over 500ms to smoothly morph height attributes without breaking visual flow.</p>
             </div>
         </section>
 
         <section class="interactive-workspace" style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 2rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
-            
+    
             <div class="filter-controls-wrapper" style="display: flex; flex-direction: column; align-items: center; gap: 0.75rem; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px dashed #e2e8f0;">
                 <span class="filter-label" style="font-size: 0.9rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">Filter by Display Panel:</span>
-                <div id="filters-container" class="filter-button-group">
-                    </div>
+                <div id="filters-container" class="filter-button-group"></div>
             </div>
 
-            <div id="histogram-chart" class="chart-canvas-box" style="width: 100%; margin: 0 auto; background: #ffffff; padding: 0.5rem;">
-                </div>
+            <div id="histogram-chart" class="chart-canvas-box" style="width: 100%; margin: 0 auto; background: #ffffff; padding: 0.5rem;"></div>
+            
+            <div class="scatterplot-separator" style="margin: 3.5rem 0 2.5rem 0; border-top: 2px solid #e2e8f0; position: relative;">
+                <span style="position: absolute; top: -13px; left: 50%; transform: translateX(-50%); background: #ffffff; padding: 0 20px; color: #64748b; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em;">Exercise 6.2 Interactive Scatterplot</span>
+            </div>
+
+            <h3 style="color: #1e293b; font-size: 1.25rem; margin: 0 0 0.4rem 0; text-align: center;">Energy Consumption vs. Star Rating Analysis</h3>
+            <p style="font-size: 14px; color: #64748b; text-align: center; margin: 0 0 1.5rem 0;">Hover over individual data coordinates to reveal branding matrices and physical sizing scales via micro-tooltips.</p>
+            
+            <div id="scatterplot-chart" class="chart-canvas-box" style="width: 100%; margin: 0 auto; background: #ffffff; padding: 0.5rem;"></div>
             
         </section>
-        
+
         <div style="background: #eff6ff; border: 1px solid #bfdbfe; padding: 15px; border-radius: 6px; font-size: 14px; color: #1e3a8a; line-height: 1.6; margin-top: 25px;">
-            <strong>Interaction Summary:</strong> Clicking display filter elements triggers dynamic array mutations in D3. The application updates scale limits seamlessly and shifts histogram bins via cubic easing transitions.
+            <strong>Transition Metrics:</strong> The bars dynamically adjust to dataset mutations using entry interpolation loops, updating both structural scale limits and frequency distributions in real-time.
         </div>
     </section>
 
@@ -409,8 +416,10 @@
 <script src="js/navigation.js"></script>
 <script src="js/storyboard.js"></script>
 <script src="js/loadCSV.js"></script>
-<script src="js/ex4-3-bar.js"></script>
 
+
+
+<script src="js/ex4-3-bar.js"></script>
 <script src="js/ex5-scatter.js"></script>
 <script src="js/ex5-donut.js"></script>
 <script src="js/ex5-techbar.js"></script>
@@ -419,6 +428,7 @@
 <script src="js/shared-constants.js"></script>
 <script src="js/interactions.js"></script>
 <script src="js/ex6-histogram.js"></script>
+<script src="js/ex6-scatterplot.js"></script>
 
 </body>
 </html>

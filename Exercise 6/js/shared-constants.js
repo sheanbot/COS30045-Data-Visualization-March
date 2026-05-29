@@ -1,40 +1,53 @@
 // js/shared-constants.js
 
-// 1. Chart Dimensions (Dufour & Meeks Inner-Chart Strategy)
-const ex6Dimensions = {
-    viewBoxW: 850,
-    viewBoxH: 450,
-    margins: { top: 40, right: 30, bottom: 60, left: 65 }
-};
+// 1. Core Chart Layout Dimensions (Set directly to prevent initialization reference errors)
+var w = 850;
+var h = 450;
+var padding = 65;
 
-ex6Dimensions.innerW = ex6Dimensions.viewBoxW - ex6Dimensions.margins.left - ex6Dimensions.margins.right;
-ex6Dimensions.innerH = ex6Dimensions.viewBoxH - ex6Dimensions.margins.top - ex6Dimensions.margins.bottom;
+// Inner dimensions calculated safely using direct variables
+var innerW = 850 - 65 - 30; // Equals 755
+var innerH = 450 - 40 - 65; // Equals 345
 
 // 2. Color Configuration Schema
 const ex6Colors = {
-    barFill: "#1e3a8a",           // Theme deep blue
-    barHover: "#3b82f6",          // Responsive hover state electric blue
+    barFill: "#64748b",           // Charcoal slate color to match your template screenshot
+    barHover: "#475569",          // Deeper hover state accent
     gapColor: "#ffffff",          // Separator line color matching card background
     textPrimary: "#1e293b"
 };
 
-// 3. Shared Scales
+// 3. Shared Scales for Exercise 6.1 Histogram
 const ex6Scales = {
     xScale: d3.scaleLinear(),
     yScale: d3.scaleLinear()
 };
 
-// 4. Data Filter State Tracking Array (Step 7.2)
-// IDs align perfectly with the screenTech text values in Ex6_TVdata.csv
+// 4. Data Filter State Tracking Array
 const filters_screen = [
-    { id: "all", label: "Show All Tech", isActive: true },
-    { id: "LCD", label: "LCD", isActive: false },
+    { id: "all", label: "All", isActive: true },
     { id: "LED", label: "LED", isActive: false },
+    { id: "LCD", label: "LCD", isActive: false },
     { id: "OLED", label: "OLED", isActive: false }
 ];
 
-// 5. Shared Bin Generator Engine (Step 6.2)
-// Directs D3 to bin records according to their energyConsumption values
-const binGenerator = d3.bin()
+// 5. Shared Bin Generator Engine
+var binGenerator = d3.bin()
     .value(d => d.energyConsumption)
-    .thresholds(25);
+    .thresholds(20); // Aligns threshold intervals cleanly with the 2800 Max Limit grid
+
+// 6. Sizing metrics for Scatterplot Vector Tooltips (Exercise 6.2)
+const tooltipDimensions = {
+    w: 160,
+    h: 55
+};
+
+// 7. Isolated global canvas anchor group hook for the Scatterplot
+var innerChartS; 
+
+// 8. Shared Scales for Scatterplot Coordinate Engine mapping
+const ex6ScalesScatter = {
+    xScaleS: d3.scaleLinear(),
+    yScaleS: d3.scaleLinear(),
+    colorScale: d3.scaleOrdinal() // Categorical hue map for panel types
+};
