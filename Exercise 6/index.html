@@ -383,10 +383,20 @@
         </section>
 
         <section class="interactive-workspace" style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 2rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
-    
+            
             <div class="filter-controls-wrapper" style="display: flex; flex-direction: column; align-items: center; gap: 0.75rem; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px dashed #e2e8f0;">
                 <span class="filter-label" style="font-size: 0.9rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">Filter by Display Panel:</span>
                 <div id="filters-container" class="filter-button-group"></div>
+            </div>
+
+            <div class="filter-container-block">
+                <div class="filter-title">FILTER BY DISPLAY PANEL:</div>
+                <div id="filter-btn-group">
+                    <button class="filter-btn active" data-tech="All">All</button>
+                    <button class="filter-btn" data-tech="LED">LED</button>
+                    <button class="filter-btn" data-tech="LCD">LCD</button>
+                    <button class="filter-btn" data-tech="OLED">OLED</button>
+                </div>
             </div>
 
             <div id="histogram-chart" class="chart-canvas-box" style="width: 100%; margin: 0 auto; background: #ffffff; padding: 0.5rem;"></div>
@@ -415,20 +425,18 @@
 
 <script src="js/navigation.js"></script>
 <script src="js/storyboard.js"></script>
-<script src="js/loadCSV.js"></script>
-
-
+<script src="js/shared-constants.js"></script>
 
 <script src="js/ex4-3-bar.js"></script>
 <script src="js/ex5-scatter.js"></script>
 <script src="js/ex5-donut.js"></script>
 <script src="js/ex5-techbar.js"></script>
 <script src="js/ex5-line.js"></script>
-
-<script src="js/shared-constants.js"></script>
-<script src="js/interactions.js"></script>
 <script src="js/ex6-histogram.js"></script>
 <script src="js/ex6-scatterplot.js"></script>
+<script src="js/interactions.js"></script>
+
+<script src="js/loadCSV.js"></script>
 
 </body>
 </html>

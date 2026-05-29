@@ -1,75 +1,143 @@
 // js/interactions.js
 
-function populateFilters(globalDataset) {
-    var filterContainer = d3.select("#filters-container");
-    filterContainer.selectAll("*").remove(); 
+// ==========================================
+// EXERCISE 6.1 HISTOGRAM FILTER SELECTION
+// ==========================================
 
-    var buttons = filterContainer.selectAll("button.filter-btn")
-        .data(filters_screen)
-        .join("button")
-        .attr("class", d => "filter-btn " + (d.isActive ? "active" : ""))
-        .text(d => d.label);
+/**
+ * Attaches filter selection listeners to your dashboard control panel elements.
+ * @param {Array} masterDataset - Unfiltered television data array.
+ */
+function initializeDisplayFilters(masterDataset) {
+    // Clear any existing listeners to avoid double-triggering bugs
+    d3.selectAll(".filter-btn").on("click", null);
 
-    buttons.on("click", function(event, selectedFilter) {
-        filters_screen.forEach(f => f.isActive = (f.id === selectedFilter.id));
-        buttons.classed("active", d => d.isActive);
+    d3.selectAll(".filter-btn").on("click", function(event) {
+        // 1. Toggle styling highlights across button groups
+        d3.selectAll(".filter-btn").classed("active", false);
+        d3.select(this).classed("active", true);
 
-        updateHistogram(selectedFilter.id, globalDataset);
+        // DEFENSIVE FALLBACK: Read from data-tech, button ID, or the text content inside the button itself
+        let selectedTech = d3.select(this).attr("data-tech") || 
+                           d3.select(this).attr("id") || 
+                           d3.select(this).text().trim();
+
+        console.log("➡️ Filter Clicked Target:", selectedTech);
+
+        let filteredData = masterDataset;
+        
+        // 2. Robust, Case-Insensitive Filtering Matrix
+        if (selectedTech && selectedTech.toLowerCase() !== "all") {
+            const targetToken = selectedTech.toLowerCase().trim();
+            
+            filteredData = masterDataset.filter(d => {
+                // List out all known technology field variants used in energy datasets
+                const targetFields = [
+                    d.technology, 
+                    d.panel, 
+                    d.type, 
+                    d.displayType, 
+                    d.screenTech, 
+                    d.Screen_Tech, 
+                    d["Screen Technology"]
+                ];
+
+                // Check the standard fields first using case-insensitive substring matching
+                for (let field of targetFields) {
+                    if (field != null && String(field).toLowerCase().trim().includes(targetToken)) {
+                        return true; 
+                    }
+                }
+
+                // ULTIMATE FALLBACK: Scan every column key in the row object for a text match
+                for (let key in d) {
+                    if (d.hasOwnProperty(key) && d[key] != null) {
+                        if (String(d[key]).toLowerCase().trim() === targetToken) {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            });
+        }
+
+        console.log(`📊 Filtered Rows Found for "${selectedTech}":`, filteredData.length);
+
+        if (filteredData.length === 0 && masterDataset.length > 0) {
+            console.warn("⚠️ Warning: Filter returned 0 rows. Check a sample data row structure below:", masterDataset[0]);
+        }
+
+        // 3. Update graph layers smoothly
+        updateHistogramWithData(filteredData);
     });
 }
 
-// Exercise 6.2 Animation Sequences
-function updateHistogram(techId, rawDataset) {
-    var updatedData = (techId === "all") 
-        ? rawDataset 
-        : rawDataset.filter(d => d.screenTech === techId);
+function updateHistogramWithData(updatedData) {
+    if (!ex6Scales.xScale || !ex6Scales.yScale) {
+        console.error("Scales uninitialized. Verify script execution order.");
+        return;
+    }
 
-    // Bins maintain steady bounds because domain structure was safely anchored on boot
-    var updatedBins = binGenerator(updatedData);
+    // Capture baseline height dynamically to prevent layout clipping
+    const currentHeight = ex6Scales.yScale.range()[0];
 
+    // 1. Re-generate bins using fixed global X scale intervals
+    var strictBinGenerator = d3.bin()
+        .value(d => d.energyConsumption) 
+        .domain(ex6Scales.xScale.domain())
+        .thresholds(ex6Scales.xScale.ticks(14)); 
+
+    var updatedBins = strictBinGenerator(updatedData);
+
+    // Recalculate Y scale ceiling dynamically based on filtered bin height maximums
     var maxFrequency = d3.max(updatedBins, d => d.length) || 0;
-    ex6Scales.yScale.domain([0, maxFrequency + 50]);
+    ex6Scales.yScale.domain([0, Math.max(1300, maxFrequency + 50)]);
 
-    var g = d3.select("#histogram-chart svg .inner-chart-group");
+    var svg = d3.select("#histogram-chart svg");
+    var g = svg.select(".inner-chart-group");
+    if (g.empty()) {
+        g = svg.select("g"); 
+    }
+    if (g.empty()) return;
 
-    // 1. Interpolate dynamic Y axis layout grids cleanly over 500ms
+    // Transition the Y-axis ticks smoothly
     g.select(".y-axis")
         .transition()
         .duration(500)
         .ease(d3.easeCubicInOut)
-        .call(d3.axisLeft(ex6Scales.yScale).ticks(8));
+        .call(d3.axisLeft(ex6Scales.yScale).ticks(13).tickFormat(d3.format(",")));
 
-    // 2. Manage explicit D3 enter/update/exit selection loops
+    // 2. Data Join Loop binding elements precisely via x0 thresholds
     g.selectAll("rect.histogram-bar")
-        .data(updatedBins)
+        .data(updatedBins, d => d.x0) 
         .join(
             enter => enter.append("rect")
                 .attr("class", "histogram-bar")
-                .attr("stroke", ex6Colors.gapColor)
-                .attr("stroke-width", "1px")
-                .attr("x", d => ex6Scales.xScale(d.x0))
-                .attr("width", d => Math.max(0, ex6Scales.xScale(d.x1) - ex6Scales.xScale(d.x0) - 1))
-                .attr("y", innerH) 
+                .attr("x", d => ex6Scales.xScale(d.x0) + 1)
+                .attr("width", d => Math.max(0, ex6Scales.xScale(d.x1) - ex6Scales.xScale(d.x0) - 2))
+                .attr("y", currentHeight) 
                 .attr("height", 0)
-                .attr("fill", ex6Colors.barFill),
+                .style("fill", "#64748b"),
             update => update,
             exit => exit.transition()
-                .duration(200)
+                .duration(300)
                 .ease(d3.easeCubicInOut)
-                .attr("y", innerH)
+                .attr("y", currentHeight)
                 .attr("height", 0)
                 .remove()
         )
-        .on("mouseover", function() { d3.select(this).attr("fill", ex6Colors.barHover); })
-        .on("mouseout", function() { d3.select(this).attr("fill", ex6Colors.barFill); })
-        // Apply unified 500ms easing transition over visual updates
         .transition()
         .duration(500)
         .ease(d3.easeCubicInOut)
-        .attr("x", d => ex6Scales.xScale(d.x0))
-        .attr("width", d => Math.max(0, ex6Scales.xScale(d.x1) - ex6Scales.xScale(d.x0) - 1))
+        .attr("x", d => ex6Scales.xScale(d.x0) + 1)
+        .attr("width", d => Math.max(0, ex6Scales.xScale(d.x1) - ex6Scales.xScale(d.x0) - 2))
         .attr("y", d => ex6Scales.yScale(d.length))
-        .attr("height", d => innerH - ex6Scales.yScale(d.length));
+        .attr("height", d => currentHeight - ex6Scales.yScale(d.length))
+        .style("fill", "#64748b"); // Keeps the charcoal theme intact
+}
+
+function updateHistogram(filteredData) {
+    updateHistogramWithData(filteredData);
 }
 
 // ==========================================
@@ -77,22 +145,23 @@ function updateHistogram(techId, rawDataset) {
 // ==========================================
 
 function createTooltip() {
-    // Append a hidden graphic layer inside the chart to store tooltip text nodes
+    d3.select("#scatterplot-tooltip").remove();
+
+    if (typeof innerChartS === "undefined" || innerChartS.empty()) return;
+
     var tooltipGroup = innerChartS.append("g")
         .attr("id", "scatterplot-tooltip")
         .style("opacity", 0)
         .style("pointer-events", "none"); 
 
-    // Render structural background container card
     tooltipGroup.append("rect")
         .attr("width", tooltipDimensions.w)
         .attr("height", tooltipDimensions.h)
-        .attr("fill", "#334155") // Clean slate-gray context card hue
+        .attr("fill", "#334155") 
         .attr("rx", 5)
         .attr("ry", 5)
         .attr("opacity", 0.95);
 
-    // Multi-line Text Node Configurations
     tooltipGroup.append("text")
         .attr("class", "tooltip-title")
         .attr("x", 10)
@@ -123,7 +192,6 @@ function HandleMouseEvents(circlesSelection) {
 
     circlesSelection
         .on("mouseenter", function(event, d) {
-            // Emphasize the currently hovered element
             d3.select(this)
                 .transition()
                 .duration(100)
@@ -134,24 +202,19 @@ function HandleMouseEvents(circlesSelection) {
             var cx = parseFloat(activeCircle.attr("cx"));
             var cy = parseFloat(activeCircle.attr("cy"));
             
-            // Re-extract data metrics directly from the programmatic node tags
-            var brandStr = activeCircle.attr("data-brand");
-            var modelStr = activeCircle.attr("data-model");
-            var sizeStr = activeCircle.attr("data-size");
-            var techStr = activeCircle.attr("data-tech");
-
-            // Update content layers dynamically (Using lowercase fallback mapping if explicit d lacks property)
+            var brandStr = activeCircle.attr("data-brand") || "Unknown";
+            var modelStr = activeCircle.attr("data-model") || "Unknown";
+            var sizeStr = activeCircle.attr("data-size") || "N/A";
+            var techStr = activeCircle.attr("data-tech") || "N/A";
             var energyVal = d.energyConsumption || activeCircle.attr("data-energy") || "N/A";
 
             tooltip.select(".tooltip-title").text(brandStr + " (" + modelStr + ")");
             tooltip.select(".tooltip-body").text("Specs: " + sizeStr + '" | ' + techStr);
             tooltip.select(".tooltip-value").text("Energy: " + energyVal + " kWh/yr");
 
-            // Plot alignment layout position coordinates
             var tooltipX = cx + 12;
             var tooltipY = cy - tooltipDimensions.h / 2;
 
-            // Strict boundary safety threshold evaluation
             if (tooltipX + tooltipDimensions.w > innerW) {
                 tooltipX = cx - tooltipDimensions.w - 12;
             }
@@ -159,14 +222,12 @@ function HandleMouseEvents(circlesSelection) {
                 tooltipY = 4;
             }
 
-            // Bring into view smoothly
             tooltip.transition()
                 .duration(100)
                 .style("opacity", 1)
                 .attr("transform", "translate(" + tooltipX + ", " + tooltipY + ")");
         })
         .on("mouseleave", function() {
-            // Restore structural baseline appearance criteria
             d3.select(this)
                 .transition()
                 .duration(150)

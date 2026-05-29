@@ -5,6 +5,13 @@ function drawScatterplot(dataset) {
     if (container.empty()) return; // Stop if the container element doesn't exist on this page view
     container.selectAll("*").remove(); // Prevent canvas layout corruption on hot-reloads
 
+    // REFRESH LIFECYCLE FIX: If router sends an empty or broken array on refresh, fallback to global cache
+    var safeDataset = (dataset && dataset.length > 0) ? dataset : globalDataset;
+    if (!safeDataset || safeDataset.length === 0) {
+        console.warn("Scatterplot waiting for globalDataset array to finish loading...");
+        return; 
+    }
+
     var svg = container.append("svg")
         .attr("width", w)
         .attr("height", h)
@@ -30,7 +37,7 @@ function drawScatterplot(dataset) {
     // Categorical color mapping matching your tech strings
     ex6ScalesScatter.colorScale
         .domain(["LED", "LCD", "OLED"])
-        .range(["#3b82f6", "#f97316", "#22c55e"]); // Electric Blue, Vibrant Orange, Forest Green
+        .range(["#3b82f6", "#f97316", "#22c55e"]); 
 
     // --- RENDER AXES ---
     innerChartS.append("g")
@@ -66,15 +73,14 @@ function drawScatterplot(dataset) {
 
     // --- PLOT SCATTER POINTS ---
     var circles = innerChartS.selectAll("circle.scatterplot-dot")
-        .data(dataset)
+        .data(safeDataset) // Using our verified safe data structure
         .join("circle")
         .attr("class", "scatterplot-dot")
-        // FIXED: Point directly to the standardized object keys you made in loadCSV.js
-        .attr("cx", d => ex6ScalesScatter.xScaleS(d.starRating)) 
-        .attr("cy", d => ex6ScalesScatter.yScaleS(d.energyConsumption)) 
+        .attr("cx", d => ex6ScalesScatter.xScaleS(d.starRating || 0)) 
+        .attr("cy", d => ex6ScalesScatter.yScaleS(d.energyConsumption || 0)) 
         .attr("r", 5.5)
         .attr("fill", d => ex6ScalesScatter.colorScale(d.screenTech || "LED"))
-        .attr("opacity", 0.65) // Transparent overlap tracking for dense product groupings
+        .attr("opacity", 0.65)
         .attr("data-brand", d => d.brand)
         .attr("data-model", d => d.model)
         .attr("data-size", d => d.size)
@@ -106,5 +112,5 @@ function drawScatterplot(dataset) {
 
     // --- INTERACTION WIRING ---
     createTooltip();
-    HandleMouseEvents(circles); // Selection reference passed directly to control DOM bindings
+    HandleMouseEvents(circles); 
 }
